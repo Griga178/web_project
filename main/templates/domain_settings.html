@@ -1,4 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>настройка доменов</h1>
+<script type=text/javascript src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
+<script type=text/javascript src="{{ url_for('static', filename='js/past_link.js') }}"></script>
+
+<h1>Настройка доменов</h1>
+
+<!-- - - - - - - - - - - - ВСТАВКА ССЫЛКИ - - - - - - - - - - -  -->
+<form action="javascript:past_link()" method="post" >
+  <label for="name">Вставьте ссылку:</label>
+  <input id="link_input" type="text" name = 'link_input_form'>
+  <input type="button" value="Отправить" onclick="past_link();">
+</form>
+
+<a href="https://ruseller.com/jquery?id=8" target="_blank">для блока настроек</a>
 {% endblock %}
