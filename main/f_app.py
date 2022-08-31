@@ -2,6 +2,9 @@ from flask import render_template, request
 from . import app
 
 from main.domain_setting.add_link_to_db import add_link_to_db
+from main.domain_setting.get_domains_from_db import get_domains_from_db
+from main.domain_setting.get_domain_set_from_db import get_domain_set_from_db
+from main.domain_setting.save_setting_to_db import save_setting_to_db
 
 @app.route('/')
 def main():
@@ -14,14 +17,23 @@ def main():
 def open_parser_setting():
     return render_template('domain_settings.html')
 
+@app.route('/write_domain_list')
 def write_domain_list():
-    pass
+    'выгружаем список доменов [[id, domain],]'
+    return get_domains_from_db()
 
+@app.route('/write_domain_settings/<domain_id>')
 def write_domain_settings(domain_id):
-    pass
+    domain_settings = get_domain_set_from_db(domain_id)
+    print(domain_settings)
+    return domain_settings
 
-def save_domain_settings(content):
-    pass
+@app.route('/save_domain_settings', methods = ['GET', 'POST'])
+def save_domain_settings():
+    dict_to_db = request.get_json()
+    server_answer = save_setting_to_db(dict_to_db)
+    print(server_answer)
+    return '{"a":"b"}'
 
 def delete_domain_settings(content):
     'удаляет настройки'
@@ -32,7 +44,7 @@ def add_new_link():
     new_link = request.form['link_input_form']
     link_from_bd = add_link_to_db(new_link)
     # parse_result = parse_link(link_from_bd[id])
-    print(f'ДОБАВЛЯЕМ НОВУЮ ССЫЛКУ: {link_from_bd}')
+    print(f'ДОБАВИЛИ НОВУЮ ССЫЛКУ: {link_from_bd}')
     return link_from_bd
 
 #<- <- <- <- <- <- <- <- ЗАГРУЗКА ФАЙЛОВ -> -> -> -> -> -> -> ->

@@ -1,4 +1,4 @@
-from main.data_base.check_links import define_links, define_main_page
+from main.domain_setting.check_links import define_links, define_main_page
 
 from main.data_base.db_start import *
 from sqlalchemy.orm import sessionmaker
