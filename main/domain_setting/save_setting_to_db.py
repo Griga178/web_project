@@ -8,7 +8,6 @@ DBSession = sessionmaker(bind = engine)
 session = DBSession()
 
 def save_setting_to_db(income_dict):
-
     if not income_dict['id_setting']:
         domain_setting = Domain_settings(
         id_domain = income_dict['id_domain'],
@@ -19,10 +18,11 @@ def save_setting_to_db(income_dict):
 
     else:
         domain_setting = session.query(Domain_settings).filter_by(id = income_dict['id_setting']).update({
-        'setting_content': js_dict['attr_name']
+        'setting_content': income_dict['content']
         })
 
     session.commit()
+    # print(domain_setting)
+    # return_dict = {str(domain_setting.id): [domain_setting.setting_name, domain_setting.setting_content]}
 
-    return_dict = {'id_setting':domain_setting.id, 'name':domain_setting.setting_name, 'content':domain_setting.setting_content,}
-    return json.dumps(return_dict)
+    return True

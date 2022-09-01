@@ -5,6 +5,7 @@ from main.domain_setting.add_link_to_db import add_link_to_db
 from main.domain_setting.get_domains_from_db import get_domains_from_db
 from main.domain_setting.get_domain_set_from_db import get_domain_set_from_db
 from main.domain_setting.save_setting_to_db import save_setting_to_db
+from main.domain_setting.delete_setting_from_db import delete_setting_from_db
 
 @app.route('/')
 def main():
@@ -25,19 +26,24 @@ def write_domain_list():
 @app.route('/write_domain_settings/<domain_id>')
 def write_domain_settings(domain_id):
     domain_settings = get_domain_set_from_db(domain_id)
-    print(domain_settings)
+    # print(domain_settings)
     return domain_settings
 
-@app.route('/save_domain_settings', methods = ['GET', 'POST'])
+@app.route('/save_domain_settings', methods = ['POST'])
 def save_domain_settings():
     dict_to_db = request.get_json()
+    # print('ПРИНЯЛИ', dict_to_db)
     server_answer = save_setting_to_db(dict_to_db)
-    print(server_answer)
-    return '{"a":"b"}'
+    if server_answer:
+        return '{"save":true}'
+    else:
+        return '{"save":false}'
 
-def delete_domain_settings(content):
-    'удаляет настройки'
-    pass
+@app.route('/delete_domain_setting', methods = ['POST'])
+def delete_domain_settings():
+    setting_id = request.get_json()
+    answer = delete_setting_from_db(setting_id)
+    return {'answer':1}
 
 @app.route('/add_new_link', methods = ['POST'])
 def add_new_link():

@@ -14,3 +14,8 @@ def get_domain_set_from_db(domain_id):
          domain_settings[str(set_obj.id)] = [set_obj.setting_name, set_obj.setting_content]
 
     return json.dumps(domain_settings)
+
+'''
+пример:
+{}
+'''
