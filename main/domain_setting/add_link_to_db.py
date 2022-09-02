@@ -4,6 +4,7 @@ from main.data_base.db_start import *
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.exc import NoResultFound
 
+import json
 DBSession = sessionmaker(bind = engine)
 session = DBSession()
 
@@ -70,4 +71,5 @@ def add_link_to_db(links):
             }
         }
     '''
-    return db_answer
+
+    return json.dumps(db_answer)

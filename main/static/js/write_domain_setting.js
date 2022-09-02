@@ -57,7 +57,7 @@ function write_domain_setting(domain_id, domain_name) {
 }
 
 function write_input_setting(setting_list){
-  // alert(setting_list)
+
   let input_names = ['tag_name', 'attribute', 'attr_value']
   let setting_type = setting_list[0]
   let setting_id = setting_list[1]?setting_list[1]:''
@@ -125,8 +125,6 @@ function save_setting(tags_type){
   // при сохранении прячем кнопку "СОХРАНИТЬ"
   let save_btn = saving_form.childNodes[1].childNodes[4]
   save_btn.setAttribute('hidden', '')
-
-
 }
 
 
@@ -138,8 +136,7 @@ function post_to_server(str_data) {
     dataType : 'json',
     data: str_data,
     success: function(response) {
-      // alert(response['save'])
-      // исчезает кнопка сохранить
+      // не нужен ответ?
       // инпуты превращаются в строку
     }
   })
@@ -154,6 +151,7 @@ function delete_setting(setting_id){
       dataType : 'json',
       data: send_data,
       success: function(response) {
+        // не нужен ответ?
       }
     })
 }

@@ -18,7 +18,7 @@ function draw_domain_table(domains_obj){
 
   for (domain in domains_obj){
     domain_row = document.createElement('tr')
-    domain_row.setAttribute("onclick", `write_domain_setting(${domains_obj[domain][0]}, "${domains_obj[domain][1]}")`)
+    domain_row.setAttribute("onclick", `write_domain_setting(${domains_obj[domain][0]}, "${domains_obj[domain][1]}");write_domain_links(${domains_obj[domain][0]})`)
     domain_row.setAttribute("style", 'cursor:pointer')
     domain_row.innerHTML = `
       <td>${domains_obj[domain][0]}</td>
