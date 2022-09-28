@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}База ссылок{% endblock %}
+
+{% block content %}
+<script type=text/javascript src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
+<script type=text/javascript src="{{ url_for('static', filename='js/parse_one_link.js') }}"></script>
+<script type=text/javascript src="{{ url_for('static', filename='js/write_domain_links.js') }}"></script>
+<script type=text/javascript src="{{ url_for('static', filename='js/start_make_screen_shots.js') }}"></script>
+
+<script> get_all_links_by_domains() </script>
+
+<h1>База ссылок</h1>
+
+{% endblock %}

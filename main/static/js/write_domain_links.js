@@ -9,13 +9,14 @@ function get_domain_links(domain_id) {
     type: 'GET',
     success: function(response){
       domains_obj = JSON.parse(response)
+      pasted_links.innerHTML = ''
       write_links_list(domains_obj)
     }
   })
 }
 
 function write_links_list(links_array) {
-  pasted_links.innerHTML = ''
+
   for (i in links_array) {
     new_li = document.createElement('li')
     // new_li.setAttribute('id', `${links_array[i][0]}`)
@@ -41,4 +42,37 @@ function draw_parse_btn(link_id) {
 
 function append_hide_attr(elem) {
   elem.setAttribute('hidden', '')
+}
+
+// ДЛЯ БАЗЫ ССЫЛОК
+function get_all_links_by_domains() {
+  // получаем словарь домен:ссылки
+  $.ajax({
+    url: `/get_all_links_by_domains`,
+    type: 'GET',
+    success: function(response){
+      domains_obj = JSON.parse(response)
+      write_links_sorted_by_domain(domains_obj)
+
+    }
+  })
+
+}
+function write_links_sorted_by_domain(domains_obj) {
+  let pasted_links = document.createElement('ul')
+  pasted_links.setAttribute('id', 'pasted_links')
+  document.body.appendChild(pasted_links)
+
+  for (domain in domains_obj) {
+    let dom_header = document.createElement('h3')
+    dom_header.innerHTML = `${domain}`
+    pasted_links.appendChild(dom_header)
+
+    let screen_btn = document.createElement('p')
+    screen_btn.innerHTML = 'Сделать скриншоты все ссылок домена'
+    screen_btn.setAttribute('onclick', `make_screens_by_dom("${domain}")`)
+    pasted_links.appendChild(screen_btn)
+
+    write_links_list(domains_obj[domain])
+  }
 }
