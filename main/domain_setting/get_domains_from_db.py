@@ -15,5 +15,6 @@ def get_domains_from_db():
         domain_id = sql_obj.id
         domain = sql_obj.name
         domain_list.append([domain_id, domain])
-        
-    return json.dumps(domain_list)
+
+    # return json.dumps(domain_list)
+    return domain_list

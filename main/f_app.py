@@ -13,6 +13,7 @@ from main.data_base.get_all_links_sort_by_domain import get_all_links_sort_by_do
 # для парсинга
 from main.domain_setting.get_domain_links_from_db import get_domain_links_from_db_by_name
 from main.parser.screen_shot_maker import start_make_screens_by_list
+from main.data_base.get_links_to_parser import get_links_to_parser
 
 # Главная страница
 @app.route('/')
@@ -28,7 +29,10 @@ def open_parser_setting():
 def write_domain_list():
     '''выгружаем список доменов
     [[id, domain],...]'''
-    return get_domains_from_db()
+    import json
+    response = get_domains_from_db()
+
+    return json.dumps(response)
 
 @app.route('/write_domain_settings/<domain_id>')
 def write_domain_settings(domain_id):
@@ -104,3 +108,32 @@ def get_links_by_domain_to_screen(domain_name):
 @app.route('/launch_parser')
 def get_parser_page():
     return render_template('parser_page.html')
+
+@app.route('/get_domain_for_setting')
+def get_domain_for_setting():
+    '''СПИСОК ДОМЕНОВ ДЛЯ ФИЛЬТРА ПАРСЕРА'''
+    import json
+    filter_setting = {}
+    response = get_domains_from_db()
+    filter_setting['domain_checkbox'] = response
+    return json.dumps(filter_setting)
+
+@app.route('/get_links_id_by_domain', methods = ['GET', 'POST'])
+def get_links_id_by_domain():
+    '''СПИСОК ВЫБРАННЫХ ДОМЕНОВ - ссылок + КОЛ-ВО ССЫЛОК'''
+    dict_to_db = request.get_json()
+    print(dict_to_db)
+
+    request_from_server_v_2 = get_links_to_parser(dict_to_db)
+    # request_from_server_v_2 = {'xcom.ru': ['1', '2', '3'], 'citi.ru': ['4', '5', '6']}
+    print(request_from_server_v_2)
+    import json
+    return json.dumps(request_from_server_v_2)
+
+@app.route('/start_parse', methods = ['GET', 'POST'])
+def start_parse():
+    '''отправляет на парсинг ссылки'''
+    list_to_db = request.get_json()
+    print(list_to_db)
+
+    return "True"

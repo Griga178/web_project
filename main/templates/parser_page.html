@@ -3,6 +3,33 @@
 {% block title %}Парсер{% endblock %}
 
 {% block content %}
+<script type=text/javascript src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
 
+<div class="filter_bar">
+  <h3>Фильтры</h3>
+
+  <form id = 'filter_form'>
+  </form>
+  <button type="button" name="button" id = 'accept_btn'>Применить</button>
+</div>
+
+<br>
+
+<div class="chosen_link">
+  <table id ='tbl_chosen_link' border="1" cellpadding="5">
+
+  </table>
+</div>
+
+<div class="parser_parametres">
+  <form id = 'param_form'>
+
+  </form>
+
+</div>
+
+<script type=text/javascript src="{{ url_for('static', filename='js/launch_filter.js') }}"></script>
+<!-- <script>draw_filter_block(filter_setting)  </script> -->
+<script>get_data_for_filter_block()  </script>
 
 {% endblock %}

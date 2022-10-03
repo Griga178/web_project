@@ -1,20 +1,48 @@
-let filter_setting = {
-    'domain_checkbox': [
-      ['1', 'xcom.ru'], ['2', 'citi.ru'], ['3', 'ozon.ru'],
-      ['4', 'onla.ru']
-    ]
-  }
+// let filter_setting = {
+//     'domain_checkbox': [
+//       ['1', 'xcom.ru'], ['2', 'citi.ru'], ['3', 'ozon.ru'],
+//       ['4', 'onla.ru']
+//     ]
+//   }
 
-let request_from_server = [
-  ['xcom.ru', '12'], ['citi.ru', '22'], ['ozon.ru', '22'],
-  ['onla.ru', '14'], ['Всего', '60']
-]
+function get_data_for_filter_block(){
+  $.ajax({
+    url: `/get_domain_for_setting`,
+    type: 'GET',
+    success: function(response){
+      filter_setting = JSON.parse(response)
+      draw_filter_block(filter_setting)
+    }
+  })
+}
+
+// let request_from_server = [
+//   ['xcom.ru', '12'], ['citi.ru', '22'], ['ozon.ru', '22'],
+//   ['onla.ru', '14'], ['Всего', '60']
+// ]
+
+function get_links_id_by_domain(execute_to_srv) {
+  $.ajax({
+    url: `/get_links_id_by_domain`,
+    contentType: 'application/json',
+    type: 'POST',
+    dataType : 'json',
+    data: execute_to_srv,
+    success: function(response) {
+
+
+      draw_chosen_link_result(response)
+
+    }
+  })
+}
 
 accept_btn.onclick = () => {
   let filtered_request = read_parametres()
-  alert(JSON.stringify(filtered_request))
-  draw_chosen_link_result(request_from_server)
-  draw_parser_parametres_filter()
+  let execute_to_srv = JSON.stringify(filtered_request)
+
+  get_links_id_by_domain(execute_to_srv)
+
 }
 
 
@@ -35,16 +63,14 @@ function read_parametres(){
     }
     else {return_object[search_name] = [checked_domain_id]}
   };
+  if (!return_object['domain_checkbox']){return_object['domain_checkbox'] = false}
   // - * - * - * - * - выбор ссылок актуальными ценами - * - * - * - * -
-  search_name = 'checkbox_parsed'
-  let parsed_checkbox = document.querySelector(`input[name=${search_name}]:checked`)
-  if (parsed_checkbox) return_object[search_name] = true
-  else return_object[search_name] = false
 
-  // alert(Object.values(return_object))
-  // alert(JSON.stringify(return_object))
+  let parsed_checkbox = document.querySelector(`input[name='checkbox_parsed']:checked`)
+  if (parsed_checkbox) return_object['checkbox_parsed'] = true
+  else return_object['checkbox_parsed'] = false
+
   return return_object
-
 }
 
 function draw_filter_block(parametres_obj){
@@ -67,6 +93,7 @@ function draw_filter_block(parametres_obj){
      filter_form.appendChild(d_label)
      filter_form.appendChild(document.createElement('br'))
    }
+
   // - * - * - * - * - АКТУАЛЬный парсинг - * - * - * - * -
   let d_label = document.createElement('label')
   let d_input = document.createElement('input')
@@ -75,7 +102,7 @@ function draw_filter_block(parametres_obj){
   d_label.setAttribute('for', 'checkbox_parsed')
   d_input.setAttribute('id', 'checkbox_parsed')
   d_input.setAttribute('type', `checkbox`)
-  d_input.setAttribute('name', `'checkbox_parsed'`)
+  d_input.setAttribute('name', 'checkbox_parsed')
 
   d_label.appendChild(d_input)
   d_label.appendChild(d_span)
@@ -96,36 +123,58 @@ function draw_chosen_link_result(request_from_server) {
   tbl_row.appendChild(tbl_head_count)
   tbl_chosen_link.appendChild(tbl_row)
 
-
+  let array_links_id = []
   for (i in request_from_server) {
     let tbl_row = document.createElement('tr')
     let tbl_data_name = document.createElement('td')
     let tbl_data_count = document.createElement('td')
-    tbl_data_name.innerHTML = `${request_from_server[i][0]}`
-    tbl_data_count.innerHTML = `${request_from_server[i][1]}`
+    tbl_data_name.innerHTML = `${i}`
+    tbl_data_count.innerHTML = `${request_from_server[i].length}`
+    array_links_id = array_links_id.concat(request_from_server[i])
+
 
     tbl_row.appendChild(tbl_data_name)
     tbl_row.appendChild(tbl_data_count)
     tbl_chosen_link.appendChild(tbl_row)
   }
+
+  // ВСЕГО ЭЛЕМЕНТОВ
+  let tbl_row_end = document.createElement('tr')
+  let tbl_data_name_end = document.createElement('td')
+  let tbl_data_count_end = document.createElement('td')
+  tbl_data_name_end.innerHTML = 'Всего'
+  tbl_data_count_end.innerHTML = `${array_links_id.length}`
+  // alert(array_links_id)
+
+  tbl_row_end.appendChild(tbl_data_name_end)
+  tbl_row_end.appendChild(tbl_data_count_end)
+  tbl_chosen_link.appendChild(tbl_row_end)
+
+  draw_parser_parametres_filter()
+
+  launch_parser_btn.onclick = () => {
+
+    let array_links_id_str = JSON.stringify(array_links_id)
+    alert(array_links_id_str)
+    $.ajax({
+      url: `/start_parse`,
+      contentType: 'application/json',
+      type: 'POST',
+      dataType : 'json',
+      data: array_links_id_str,
+      success: function(response) {
+        alert(response)
+      }
+    })
+  }
 }
 
 function draw_parser_parametres_filter() {
-
-  let scr_input = document.createElement('input')
-  let scr_prc_input = document.createElement('input')
-  scr_prc_input.setAttribute('type', 'radio')
-  scr_input.setAttribute('type', 'radio')
+  param_form.innerHTML = ''
 
   let launch_btn = document.createElement('button')
   launch_btn.setAttribute('id', 'launch_parser_btn')
   launch_btn.innerHTML = 'Запустить парсер'
 
-  // param_form.appendChild(scr_input)
-  // param_form.appendChild(scr_prc_input)
   param_form.appendChild(launch_btn)
 }
-
-// function launch_parser(chosen_parametres){
-//  $.ajax
-// }
