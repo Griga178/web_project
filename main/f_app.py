@@ -14,6 +14,7 @@ from main.data_base.get_all_links_sort_by_domain import get_all_links_sort_by_do
 from main.domain_setting.get_domain_links_from_db import get_domain_links_from_db_by_name
 from main.parser.screen_shot_maker import start_make_screens_by_list
 from main.data_base.get_links_to_parser import get_links_to_parser
+from main.parser.run_parser import run_parser
 
 # Главная страница
 @app.route('/')
@@ -100,9 +101,7 @@ def trial_parse(link_id):
 @app.route('/get_links_by_domain_to_screen/<domain_name>')
 def get_links_by_domain_to_screen(domain_name):
     domain_links = get_domain_links_from_db_by_name(domain_name)
-
     start_make_screens_by_list(domain_links)
-
     return "True"
 
 @app.route('/launch_parser')
@@ -122,11 +121,8 @@ def get_domain_for_setting():
 def get_links_id_by_domain():
     '''СПИСОК ВЫБРАННЫХ ДОМЕНОВ - ссылок + КОЛ-ВО ССЫЛОК'''
     dict_to_db = request.get_json()
-    print(dict_to_db)
-
     request_from_server_v_2 = get_links_to_parser(dict_to_db)
     # request_from_server_v_2 = {'xcom.ru': ['1', '2', '3'], 'citi.ru': ['4', '5', '6']}
-    print(request_from_server_v_2)
     import json
     return json.dumps(request_from_server_v_2)
 
@@ -134,6 +130,5 @@ def get_links_id_by_domain():
 def start_parse():
     '''отправляет на парсинг ссылки'''
     list_to_db = request.get_json()
-    print(list_to_db)
-
+    run_parser(list_to_db)
     return "True"
