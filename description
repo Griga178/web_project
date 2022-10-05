@@ -1,0 +1,44 @@
+├── main
+│   ├── __init__.py
+│   ├── f_app.py      # пути, по которым надо отправлять запросы
+
+│   ├── templates
+│   │   ├── base.html
+│   │   ├── domain_settings.html
+│   │   ├── links_base.html
+│   │   ├── main.html
+│   │   ├── parser_page.html
+
+│   ├── static
+│   │   ├── js
+│   │   │   ├── jquery-3.6.0.min.js
+│   │   │   ├── launch_filter.js
+│   │   │   ├── past_one_link.js
+│   │   │   ├── past_link.js
+│   │   │   ├── start_make_screen_shoots.js
+│   │   │   ├── write_domain_links.js
+│   │   │   ├── write_domain_list.js
+│   │   │   ├── write_domain_setting.js
+│   │   ├── css* # в проекте
+
+│   ├── parser
+│   │   ├── open_web_link.py
+│   │   ├── run_parser.py
+│   │   ├── screen_shoot_maker.py
+
+│   ├── domain_setting
+
+- - - - - - - - - - - - НА РЕФАКТОРИНГ - - - - - - - - - - - -
+
+│   ├── data_base
+│   │   ├── tables.py
+│   │   ├── db_start.py
+│   │   ├── query_to_links.py
+│   │   ├── query_to_domains.py
+│   │   ├── query_to_domain_settings.py
+- - - - - - - - - - - - НА РЕФАКТОРИНГ - - - - - - - - - - - -
+
+
+├── run_web.py          # точка входа в приложение
+├── data_base_ver1.db   # тестовый файл БД sqlite3
+├── requirements.txt
