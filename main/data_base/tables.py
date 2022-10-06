@@ -38,4 +38,4 @@ class Parsing(Base):
     price = Column(FLOAT)
     parsing_date = Column(Text)
     product_name = Column(Text)
-    screen_name = Column(Text)
+    screen_name = Column(Text) # используем как Нет в наличии bool()

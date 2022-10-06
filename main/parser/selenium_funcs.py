@@ -34,5 +34,5 @@ def find_element(driver, settings):
             answer_dict[set_type] = found_info.text
         except:
             answer_dict[set_type] = False
-            print(f'не удалось найти элемент {set_type}')
+            # print(f'не удалось найти элемент {set_type}')
     return answer_dict
