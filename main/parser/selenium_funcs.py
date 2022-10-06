@@ -30,7 +30,6 @@ def find_element(driver, settings):
             some_xpath = f"//{tag}[@{atribute}='{atr_val}']"
             wait.until(EC.presence_of_element_located((By.XPATH, some_xpath))) # ждем пока появится элемент
             found_info = driver.find_element_by_xpath(f"//{tag}[@{atribute}='{atr_val}']")
-            print(found_info)
             answer_dict[set_type] = found_info.text
         except:
             answer_dict[set_type] = False

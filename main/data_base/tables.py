@@ -4,14 +4,6 @@ from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
-class Domains(Base):
-    'Домены'
-    __tablename__ = 'domains'
-    id = Column(Integer, primary_key = True)
-    name = Column(String(255), nullable = False)
-    net_link = relationship("Links", backref = 'domains')
-    net_link_sett = relationship("Domain_settings", backref = 'domains')
-
 class Links(Base):
     'Ссылки'
     __tablename__ = 'links'
@@ -21,6 +13,14 @@ class Links(Base):
     # id_model = Column(Integer, ForeignKey('models.id'))
     # id_kkn = Column(Integer, ForeignKey('kkns.id'))
     content = relationship("Parsing", backref = 'links')
+
+class Domains(Base):
+    'Домены'
+    __tablename__ = 'domains'
+    id = Column(Integer, primary_key = True)
+    name = Column(String(255), nullable = False)
+    net_link = relationship("Links", backref = 'domains')
+    net_link_sett = relationship("Domain_settings", backref = 'domains')
 
 class Domain_settings(Base):
     'Настройки для парсинга'
@@ -38,4 +38,5 @@ class Parsing(Base):
     price = Column(FLOAT)
     parsing_date = Column(Text)
     product_name = Column(Text)
-    screen_name = Column(Text) # используем как Нет в наличии bool()
+    product_avaliable = Column(Boolean)
+    user_changed = Column(Boolean)

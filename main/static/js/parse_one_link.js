@@ -7,7 +7,7 @@ function launch_parser(link_id){
     url: `/parse_link/${link_id}`,
     type: 'GET',
     success: function(response){
-      alert(response)
+      // alert(response)
     }
   })
 }

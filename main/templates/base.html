@@ -9,6 +9,7 @@
   <body>
     <a href="{{url_for('main')}}">Главная</a> <br>
     <a href="{{url_for('get_parser_page')}}">Запустить парсер</a> <br>
+    <a href="{{url_for('parsing_result_view')}}">Результаты парсинга</a> <br>
     <a href="{{url_for('open_parser_setting')}}">Настройка доменов</a> <br>
     <a href="{{url_for('open_links_base')}}">База ссылок</a> <br>
         {% block content %}{% endblock %}

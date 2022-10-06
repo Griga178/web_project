@@ -29,6 +29,9 @@ def clean_elements(web_elements):
         if web_elements['price']:
             web_elements['price'] = clean_number(web_elements['price'])
 
+    if web_elements.get('avaliable', False):
+        web_elements['avaliable'] = True
+        
     web_elements['current_date'] = set_current_date()
-    
+
     return web_elements

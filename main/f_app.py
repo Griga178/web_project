@@ -16,6 +16,9 @@ from main.parser.screen_shot_maker import start_make_screens_by_list
 from main.data_base.get_links_to_parser import get_links_to_parser
 from main.parser.run_parser import run_parser
 
+# просмотр результатова парсинга
+from main.parsing_result_view.result_to_js import prepare_data_to_js
+
 # Главная страница
 @app.route('/')
 def main():
@@ -132,3 +135,9 @@ def start_parse():
     list_to_db = request.get_json()
     run_parser(list_to_db)
     return "True"
+
+#<- <- <- <- <- <- <- <- РЕЗУЛЬТАТЫ ПАРСИНГА -> -> -> -> -> -> -> ->
+@app.route('/p_r_v')
+def parsing_result_view():
+    json_dict = prepare_data_to_js()
+    return render_template('parsing_result_view.html', json_dict = json_dict)

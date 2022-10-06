@@ -10,7 +10,7 @@ SCREEN_FOLDER = 'C:/Users/G.Tishchenko/Desktop/web_screens/'
 # │   ├── str('1')
 
 # ├── links_list []
-# │   ├── no_name []
+# │   ├── []
 # │   │   ├── link - str
 # │   │   ├── domain_id - int
 # │   │   ├── link_id  - int

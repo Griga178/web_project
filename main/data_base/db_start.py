@@ -4,7 +4,7 @@ from sqlalchemy import MetaData
 
 metadata = MetaData()
 
-my_base = 'sqlite:///data_base_ver_1.db'
+my_base = 'sqlite:///data_base_ver_2.db'
 
 engine = create_engine(f'{my_base}?check_same_thread=False')
 

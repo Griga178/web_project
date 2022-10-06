@@ -1,13 +1,35 @@
+├── run_web.py          # точка входа в приложение
+├── data_base_ver1.db   # Файл БД sqlite3
+├── requirements.txt
 ├── main
 │   ├── __init__.py
 │   ├── f_app.py      # пути, по которым надо отправлять запросы
 
-│   ├── templates
-│   │   ├── base.html
-│   │   ├── domain_settings.html
-│   │   ├── links_base.html
-│   │   ├── main.html
-│   │   ├── parser_page.html
+│   ├── data_base
+│   │   ├── db_start.py
+│   │   ├── - del - del - del -
+│   │   ├── - del - del - del -
+│   │   ├── query_to_links.py
+│   │   ├── query_to_domains.py
+│   │   ├── query_to_domain_settings.py
+│   │   ├── query_to_parsing.py
+│   │   ├── tables.py
+
+│   ├── domain_setting
+│   │   ├── - del - del - del -
+│   │   ├── - del - del - del -
+...
+
+│   ├── parser
+│   │   ├── clean_elements.py
+│   │   ├── prepare_data.py
+│   │   ├── run_parser.py
+│   │   ├── save_parse_result.py
+│   │   ├── screen_shoot_maker.py
+│   │   ├── selenium_funcs.py
+
+│   ├── parsing_result_view
+│   │   ├── .py
 
 │   ├── static
 │   │   ├── js
@@ -21,24 +43,10 @@
 │   │   │   ├── write_domain_setting.js
 │   │   ├── css* # в проекте
 
-│   ├── parser
-│   │   ├── open_web_link.py
-│   │   ├── run_parser.py
-│   │   ├── screen_shoot_maker.py
-
-│   ├── domain_setting
-
-- - - - - - - - - - - - НА РЕФАКТОРИНГ - - - - - - - - - - - -
-
-│   ├── data_base
-│   │   ├── tables.py
-│   │   ├── db_start.py
-│   │   ├── query_to_links.py
-│   │   ├── query_to_domains.py
-│   │   ├── query_to_domain_settings.py
-- - - - - - - - - - - - НА РЕФАКТОРИНГ - - - - - - - - - - - -
-
-
-├── run_web.py          # точка входа в приложение
-├── data_base_ver1.db   # тестовый файл БД sqlite3
-├── requirements.txt
+│   ├── templates
+│   │   ├── base.html
+│   │   ├── domain_settings.html
+│   │   ├── links_base.html
+│   │   ├── main.html
+│   │   ├── parser_page.html
+│   │   ├── parsing_result_view.html
