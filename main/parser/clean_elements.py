@@ -24,14 +24,33 @@ def set_current_date():
 
     return current_date
 
+# ├── web_elements {}
+# │   ├── 'avaliable': str(*) | False - при наличии в настроках
+# │   ├── 'price': str(*) | False - при наличии в настроках
+# │   ├── 'name': str(*) | False - при наличии в настроках
+
+# ├── clear_elements {}
+# │   ├── 'link_id': int(*)
+# │   ├── 'avaliable': str(*) | False
+# │   ├── 'price': float(*) | False
+# │   ├── 'name': str(*) | False
+# │   ├── 'current_date': str("%d/%m/%Y")
+
 def clean_elements(web_elements):
-    if 'price' in web_elements:
-        if web_elements['price']:
-            web_elements['price'] = clean_number(web_elements['price'])
+
+    if web_elements.get('price', False):
+        web_elements['price'] = clean_number(web_elements['price'])
+    else:
+        web_elements['price'] = False
 
     if web_elements.get('avaliable', False):
         web_elements['avaliable'] = True
-        
+    else:
+        web_elements['avaliable'] = False
+
+    if not web_elements.get('name', False):
+        web_elements['name'] = False
+
     web_elements['current_date'] = set_current_date()
 
     return web_elements

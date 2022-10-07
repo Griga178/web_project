@@ -1,11 +1,10 @@
 from main.data_base.tables import *
+from main.settings import DATA_BASE_PATH
 
 from sqlalchemy import MetaData
 
 metadata = MetaData()
 
-my_base = 'sqlite:///data_base_ver_2.db'
-
-engine = create_engine(f'{my_base}?check_same_thread=False')
+engine = create_engine(f'{DATA_BASE_PATH}?check_same_thread=False')
 
 Base.metadata.create_all(engine)

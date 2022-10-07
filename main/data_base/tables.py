@@ -38,5 +38,5 @@ class Parsing(Base):
     price = Column(FLOAT)
     parsing_date = Column(Text)
     product_name = Column(Text)
-    product_avaliable = Column(Boolean)
-    user_changed = Column(Boolean)
+    product_avaliable = Column(Boolean) # подумать
+    user_changed = Column(Boolean)  # user_accept

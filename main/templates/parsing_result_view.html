@@ -4,22 +4,59 @@
 
 {% block content %}
 <script type=text/javascript src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
-<script type=text/javascript src="{{ url_for('static', filename='js/prv_get_result_object.js') }}"></script>
-<script type=text/javascript src="{{ url_for('static', filename='js/prv_list_of_results.js') }}"></script>
-<script type=text/javascript src="{{ url_for('static', filename='js/prv_current_result.js') }}"></script>
+
+<script type=text/javascript src="{{ url_for('static', filename='js/prv/get_data_from_srv.js') }}"></script>
+<script type=text/javascript src="{{ url_for('static', filename='js/prv/filter_creator.js') }}"></script>
+<script type=text/javascript src="{{ url_for('static', filename='js/prv/filter_listener.js') }}"></script>
+<script type=text/javascript src="{{ url_for('static', filename='js/prv/result_list_creator.js') }}"></script>
+<script type=text/javascript src="{{ url_for('static', filename='js/prv/chosen_result_creator.js') }}"></script>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/prv_block_orient.css') }}">
 
 <div class="block_result_viewer">
 
   <div class="block_filter_of_results">
     <h3>Фильтр</h3>
+    <ul id='flt_by_domain'>Домен:</ul>
+    <script type="text/javascript">
+      function chose_all(){
+        $("input:checkbox").attr('checked', true)
+      }
+    </script>
+    <p onclick = 'chose_all()' style="color:red">Выбрать все</p>
+    <ul id='flt_by_date'>Дата:</ul>
+    <label for="flt_by_avaliable">
+      <span>Нет в наличии</span>
+      <input type="checkbox" id='flt_by_avaliable'>
+    </label>
+    <br>
+    <label for="flt_by_accept">
+      <span>Проверено</span>
+      <input type="checkbox" id='flt_by_accept'>
+    </label>
+    <br>
+    <button type="button" name="button" id='filter_btn'>Применить</button>
+
   </div>
 
   <div class="block_list_of_results">
     <h3>Список результатов</h3>
-  </div>
+    <ul id='filtered_reaults'>
 
-  <div class="block_current_pr">
-    <h3>Текущий результат</h3>
+    </ul>
+  </div>
+<h3>Текущий результат</h3>
+  <div class="block current_result_container" id="results_block">
+    <h4 id="product_name_head">Название</h4>
+    <div class="block image_block">
+      <img id ="current_img">
+    </div>
+    <div class="block result_info_block">
+
+    </div>
+    <div class="">
+
+    </div>
   </div>
 
 </div>

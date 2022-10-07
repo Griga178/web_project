@@ -1,4 +1,4 @@
-from flask import render_template, request
+from flask import render_template, request, make_response, jsonify
 from . import app
 
 from main.domain_setting.add_link_to_db import add_link_to_db
@@ -18,6 +18,7 @@ from main.parser.run_parser import run_parser
 
 # просмотр результатова парсинга
 from main.parsing_result_view.result_to_js import prepare_data_to_js
+from main.parsing_result_view.send_image import image_sender
 
 # Главная страница
 @app.route('/')
@@ -137,7 +138,15 @@ def start_parse():
     return "True"
 
 #<- <- <- <- <- <- <- <- РЕЗУЛЬТАТЫ ПАРСИНГА -> -> -> -> -> -> -> ->
-@app.route('/p_r_v')
+@app.route('/prv')
 def parsing_result_view():
     json_dict = prepare_data_to_js()
     return render_template('parsing_result_view.html', json_dict = json_dict)
+
+@app.route('/get_image/<result_id>')
+def send_image(result_id):
+    try:
+        base64_img = image_sender(result_id)
+    except:
+        base64_img = image_sender(0)
+    return jsonify({'status': True, 'image': base64_img})

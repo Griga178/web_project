@@ -34,10 +34,19 @@
 │   ├── static
 │   │   ├── js
 │   │   │   ├── jquery-3.6.0.min.js
-│   │   │   ├── launch_filter.js
 │   │   │   ├── past_one_link.js
 │   │   │   ├── past_link.js
 │   │   │   ├── start_make_screen_shoots.js
+# parser
+│   │   │   ├── launch_filter.js
+# parser_result_view
+│   │   │   ├── prv_get_data_from_srv.js
+│   │   │   ├── prv_filter_creator.js
+│   │   │   ├── prv_filter_listener.js
+│   │   │   ├── prv_filtered_query_to_srv.js
+│   │   │   ├── prv_result_list_creator.js
+│   │   │   ├── prv_chosen_result_creator.js
+# domain_setting
 │   │   │   ├── write_domain_links.js
 │   │   │   ├── write_domain_list.js
 │   │   │   ├── write_domain_setting.js

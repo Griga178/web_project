@@ -1,7 +1,6 @@
 from main.data_base.query_to_parsing import select_all_results
+from main.settings import PARSING_SCREEN_FOLDER
 import json
-
-SCREEN_FOLDER = 'C:/Users/G.Tishchenko/Desktop/web_screens/'
 
 # ├── dict_to_js {}
 # │   ├── link_id {}
@@ -19,11 +18,11 @@ def prepare_data_to_js():
     dict_to_js = {}
     for p_result in income_result_list:
         result_id = str(p_result.id)
-        screen_name = (SCREEN_FOLDER + result_id + '.jpg') if not p_result.product_avaliable else False
+        screen_name = (PARSING_SCREEN_FOLDER + result_id + '.jpg') if not p_result.product_avaliable else False
         dict_to_js[result_id] = {'link': p_result.links.link}
         dict_to_js[result_id]['domain_name'] = p_result.links.domains.name
-        dict_to_js[result_id]['result_id'] = result_id
         dict_to_js[result_id]['price'] = p_result.price
+        dict_to_js[result_id]['result_id'] = result_id
         dict_to_js[result_id]['parsing_date'] = p_result.parsing_date
         dict_to_js[result_id]['product_name'] = p_result.product_name
         dict_to_js[result_id]['product_not_avaliable'] = p_result.product_avaliable

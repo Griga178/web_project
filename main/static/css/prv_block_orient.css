@@ -1,0 +1,39 @@
+/*
+├── block block_result_viewer
+│   ├── block block_filter_of_results
+
+│   ├── block block_list_of_results
+
+│   ├── block current_result_container
+│   │   ├── block image_block
+│   │   ├── block result_info_block
+*/
+
+.block {
+  border: 2px dashed green;
+  box-sizing: border-box;
+  border-radius: 5px;
+}
+
+.current_result_container {
+  height: 650px;
+  width: 1204px;
+  /* padding: 1%; */
+}
+.image_block {
+  position: absolute;
+  width: 964px;
+  height: 544px;
+  margin-left: 10px;
+}
+img {
+  width: 960px;
+  height: 540px;
+}
+
+.result_info_block{
+  position: absolute;
+  margin-left: 984px;
+  width: 200px;
+  height: 400px;
+}

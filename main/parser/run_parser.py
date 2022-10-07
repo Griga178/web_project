@@ -2,9 +2,10 @@ from main.parser.prepare_data import prepare_links_and_settigs
 from main.parser.selenium_funcs import create_selenium_driver, find_element
 from main.parser.clean_elements import clean_elements
 from main.parser.screen_shot_maker import make_screen_shot
-from main.parser.save_parse_result import insert_to_db
+# from main.parser.save_parse_result import insert_to_db
+from main.data_base.query_to_parsing import insert_parsing_result
 
-SCREEN_FOLDER = 'C:/Users/G.Tishchenko/Desktop/web_screens/'
+from main.settings import PARSING_SCREEN_FOLDER
 
 # ├── list_links_id []
 # │   ├── str('1')
@@ -16,14 +17,14 @@ SCREEN_FOLDER = 'C:/Users/G.Tishchenko/Desktop/web_screens/'
 # │   │   ├── link_id  - int
 
 # ├── domain_settings {}
-# │   ├── 'avaliable': str(tag;tag_attributre;attributre_value)
-# │   ├── 'price': str(tag;tag_attributre;attributre_value)
-# │   ├── 'name': str(tag;tag_attributre;attributre_value)
+# │   ├── 'avaliable': str(tag;tag_attributre;attributre_value) - при наличии в настроках
+# │   ├── 'price': str(tag;tag_attributre;attributre_value) - при наличии в настроках
+# │   ├── 'name': str(tag;tag_attributre;attributre_value)- при наличии в настроках
 
 # ├── web_elements {}
-# │   ├── 'avaliable': str(*) | False
-# │   ├── 'price': str(*) | False
-# │   ├── 'name': str(*) | False
+# │   ├── 'avaliable': str(*) | False - при наличии в настроках
+# │   ├── 'price': str(*) | False - при наличии в настроках
+# │   ├── 'name': str(*) | False - при наличии в настроках
 
 # ├── clear_elements {}
 # │   ├── 'link_id': int(*)
@@ -53,12 +54,12 @@ def run_parser(list_links_id):
         clear_elements['link_id'] = link_id
         print(current_link[:20], clear_elements)
         # ЗАПИСЫВАЕМ В БД
-        parsing_id = insert_to_db(clear_elements)
+        parsing_id = insert_parsing_result(clear_elements)
         # СОЗДАНИЕ СКРИНШОТА
         if 'avaliable' in web_elements:
             if not web_elements['avaliable']:
-                # screen_name = SCREEN_FOLDER + str(link_id) + '.jpg'
-                screen_name = SCREEN_FOLDER + str(parsing_id) + '.jpg'
+                # screen_name = PARSING_SCREEN_FOLDER + str(link_id) + '.jpg'
+                screen_name = PARSING_SCREEN_FOLDER + str(parsing_id) + '.jpg'
                 make_screen_shot(screen_name)
 
 
