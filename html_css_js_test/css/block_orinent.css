@@ -27,18 +27,23 @@
 
 .result_container{
   /* float: left; */
-  min-width: 80%;
+  /* min-width: 50%; */
+  /* height: 800px; */
 
 }
 img{
-  width: 960px;
-  height: 540px;
+  /* width: 100%; */
+  width: inherit;
+  /* max-height: inherit; */
 }
 .img_container {
-  width: 960px;
-  height: 540px;
+  min-height: 50px;
+  width: 100%;
+  max-width: 960px;
+  /* max-height: 540px; */
+  /* max-height: 80%; */
 }
 
 .parsing_info{
-
+display: block;
 }

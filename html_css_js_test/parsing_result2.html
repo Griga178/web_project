@@ -6,7 +6,7 @@
   <title>Главная</title>
   <link rel="stylesheet" href="css/menu.css">
   <link rel="stylesheet" href="css/block_orinent.css">
-  <script type="text/javascript" src="js/start_change.js"></script>
+
 </head>
 
 <body>
@@ -22,33 +22,24 @@
   </div>
 
   <div class="block container">
+
     <div class="block result_container">
       <div class="block img_container">
-        <img src="images/grey_kitten.jpg" alt="">
+
+        <p id="screen_shot">0</p>
       </div>
       <div class="block parsing_info">
-        <span>Серый котенок</span><br>
-        <span>1 000 000</span>
+        <span id="name_text">Серый котенок</span><br>
+        <span id="price_text">1 000 000</span>
       </div>
     </div>
-    <!-- <div class="block result_container">
-      <div class="block img_container">
-        <img src="images/red_kitten.jpg" alt="">
-      </div>
-      <div class="block parsing_info">
-        <span>Рыжий котенок</span><br>
-        <span>1 000 000</span>
-      </div>
+    <div class="button_previous">
+      <button id="button_previous" type="button" name="button">Предыдущая</button>
     </div>
-    <div class="block result_container">
-      <div class="block img_container">
-        <img src="images/white_kitten.jpg" alt="">
-      </div>
-      <div class="block parsing_info">
-        <span>Белый котенок</span><br>
-        <span>1 000 000</span>
-      </div>
-    </div> -->
+
+    <div class="button_next">
+      <button id="button_next" type="button" name="button">Следующая</button>
+    </div>
 
     <div class="block filter">
       <h2>Форма отбора результатов</h2>
@@ -60,5 +51,6 @@
   </div>
 
 </body>
+<script type="text/javascript" src="js/start_change.js"></script>
 
 </html>
