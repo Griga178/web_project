@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Главная</title>
+  <title>Результаты парсинга</title>
   <link rel="stylesheet" href="css/menu.css">
   <link rel="stylesheet" href="css/block_orinent.css">
 
@@ -15,7 +15,8 @@
     <ul class='menu-main'>
       <li><a href="index.html">Главная</a></li>
       <li><a href="parser.html">Парсер</a></li>
-      <li><a href="parsing_result.html" class='current'>Результаты парсинга</a></li>
+      <li><a href="parsing_result.html" >Результаты парсинга</a></li>
+      <li><a href="resultv2.html" class='current'>Результаты парсинга 2</a></li>
       <li><a href="domain_setting.html">Настройки доменов</a></li>
       <li><a href="file_loader.html">Загрузка файлов</a></li>
     </ul>
@@ -24,15 +25,16 @@
   <div class="block container">
 
     <div class="block result_container">
+      <p id="PScreenID">0</p>
       <div class="block img_container">
-
-        <p id="screen_shot">0</p>
+        <img id='CurrentImageContainer' src="images/3.jpg" alt="">
       </div>
       <div class="block parsing_info">
-        <span id="name_text">Серый котенок</span><br>
-        <span id="price_text">1 000 000</span>
+        <span id="SpanTextName">Серый котенок</span><br>
+        <span id="SpanPriceValue">1 000 000</span>
       </div>
     </div>
+
     <div class="button_previous">
       <button id="button_previous" type="button" name="button">Предыдущая</button>
     </div>
@@ -52,5 +54,7 @@
 
 </body>
 <script type="text/javascript" src="js/start_change.js"></script>
+
+
 
 </html>
