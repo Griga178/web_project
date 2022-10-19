@@ -1,0 +1,68 @@
+ВЕРСИЯ 1
+1 USER открывает РЕЗУЛЬТАТЫ.html
+1* - К. создает пустой список для id обрабатываемых результатов
+2 клиент запрашивает данные у сервера для заполнения ФИЛЬТРА
+3 клиент получает список для ФИЛЬТРА заполняет ЕГО
+4 USER в ФИЛЬТРЕ формирует запрос для поиска РЕЗУЛЬТАТОВ
+5 клиент делает запрос - получает список ID РЕЗУЛЬТАТОВ
+6 клиент запрашивает данные РЕЗУЛЬТАТА по ID (ПЕРВОГО ЭЛЕМЕНТА)
+7 клиент заполняет блоки РЕЗУЛЬТАТ + СПИСОК
+8 USER нажимает на кнопку "следующий/предыдущий" РЕЗУЛЬТАТ
+9 обработчик кнопок вызывает Ф.6 или возвращает false
+10 USER нажимает "Пробел"
+11 клиент меняет тег цены на форму "input" (можно изменить цену)
+12 USER нажимает "Enter"
+13 клиент менят цену AJAX POST
+14 USER нажимает "Enter" - (не меняя цену)
+15 клиент меняет статус - "Проверен" AJAX POST
+16 evenListiner btn.click() - left
+17 evenListiner btn.click() - right
+18 evenListiner btn.click() - space
+19 evenListiner btn.click() - enter
+20 evenListiner btn.click() - enter after space
+
+
+1 - let listResultId
+2 - getDataForFilter() --> filterData {}
+3 - fillFilterBlock(filterData)
+4 - readFilteredQuery() --> filteredQuery {}
+5 - getResultList(filteredQuery) --> listResultId []
+6 - getResulData(listResultId[0]) --> resultData {}
+7 - fillResultBlock(resultData)
+8 - ... USER clickBtn/arrow left/Right
+9 - moveResult()  --> Func 6 or "Message"
+10 - ... USER clickBtn/Space
+11 - changeResultPrice()
+12 - ... USER clickBtn/Enter (after Space)
+13 - postPrice(resultIndex)
+14 - ... USER clickBtn/Enter
+15 - postStatus(resultIndex)
+16 evenListiner btn.click() - left
+17 evenListiner btn.click() - right
+18 evenListiner btn.click() - space
+19 evenListiner btn.click() - enter
+20 evenListiner btn.click() - enter after space
+
+1 - активируется пользователем
+2 - прописана в HTML
+3 - активируется ф-ей № 2
+4 - активируется пользователем
+5 - активируется ф-ей № 4
+6 - активируется ф-ей № 5
+7 - активируется ф-ей № 6
+8 - активируется пользователем
+9 - активируется ф-ей № 16/17
+10 - активируется пользователем
+11 - активируется ф-ей № 18
+12 - активируется пользователем
+13 - активируется ф-ей № 20
+14 - активируется пользователем
+15 - активируется ф-ей № 19
+
+Файлы:
+tempData (1)
+getFilter (2, 3, 4)
+getResult (5, 6, 7)
+changeResult (9, 11)
+postResult (13, 15)
+events (16 - 20)
