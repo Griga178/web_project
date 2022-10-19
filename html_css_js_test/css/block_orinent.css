@@ -1,49 +1,98 @@
-.block{
-  border: 1px dashed black;
-  box-sizing: border-box;
-  border-radius: 5px;
+/*
+ grid content
 
+├── grid content_part result
+│   ├── grid result_part btn_left
+│   ├── grid result_part img
+│   │   ├── img
+│   ├── grid result_part text
+│   │   ├── name
+│   │   ├── price
+│   ├── grid result_part btn_right
+
+├── grid list
+│   ├── block_result_elem
+
+├── grid filter
+│   ├── block_result_elem
+*/
+
+.content {
+  margin: auto;
+  background-color: #fad2b0;
+  width: 95%;
+  height: 110vh;
+  gap: 20px;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(12, 1fr);
 }
 
-.container {
-  margin: 0 auto;
-  width: 90%;
-  height: 800px;
+.grid {
+  display: grid;
 }
 
-.filter{
-  margin-top: 40px;
-  /* float: right; */
-  min-width: 20%;
-  width: 30%;
+.content_part {
+  background-color: sandybrown;
 }
 
-.result_list {
-  margin-top: 40px;
-  /* float: right; */
-  min-width: 20%;
-  width: 30%;
+/* - * - * - * - * РЕЗУЛЬТАТ * - * - * - * -  */
+.result_part{
+  background-color: #f08020;
 }
 
-.result_container{
-  /* float: left; */
-  /* min-width: 50%; */
-  /* height: 800px; */
-
+.result {
+  grid-column: 1 / 10;
+  grid-row: 3 / 13;
+  gap: 10px;
+  grid-template-columns: repeat(20, 1fr);
+  grid-template-rows: repeat(9, 1fr);
 }
+.btn_left{
+  grid-column: 1 / 2;
+  grid-row: 1 / 10;
+}
+
+.text_grid{
+  grid-column: 2 / 20;
+  grid-row: 1 / 3;
+}
+
+.img_grid {
+  align-content : center;
+  justify-content: center;
+  grid-column: 2 / 20;
+  grid-row: 3 /10;
+}
+
 img{
-  /* width: 100%; */
-  width: inherit;
-  /* max-height: inherit; */
-}
-.img_container {
-  min-height: 50px;
-  width: 100%;
-  max-width: 960px;
-  /* max-height: 540px; */
-  /* max-height: 80%; */
+  /* min-width: 640px; */
+  width: 1280px;
+  max-width: 100%;
 }
 
-.parsing_info{
-display: block;
+.btn_right {
+  grid-column: 20 / 21;
+  grid-row: 1 / 10;
+}
+.btn {
+  cursor: pointer;
+  user-select: none;
+}
+.btn:active {
+  background-color: black;
+  color: white
+}
+
+.btn:hover {
+  opacity: 40%;
+}
+/* - * - * - * - * ФИЛЬТР * - * - * - * -  */
+.filter {
+  grid-column: 1 / 10;
+  grid-row: 1 / 3;
+}
+/* - * - * - * - * СПИСОК * - * - * - * -  */
+.list {
+  grid-column: 10 / 13;
+  grid-row: 1 / 13;
 }

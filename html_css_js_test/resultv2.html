@@ -15,41 +15,44 @@
     <ul class='menu-main'>
       <li><a href="index.html">Главная</a></li>
       <li><a href="parser.html">Парсер</a></li>
-      <li><a href="parsing_result.html" >Результаты парсинга</a></li>
-      <li><a href="resultv2.html" class='current'>Результаты парсинга 2</a></li>
+      <!-- <li><a href="parsing_result.html" >Результаты парсинга</a></li> -->
+      <li><a href="resultv2.html" class='current'>Результаты</a></li>
       <li><a href="domain_setting.html">Настройки доменов</a></li>
       <li><a href="file_loader.html">Загрузка файлов</a></li>
     </ul>
   </div>
 
-  <div class="block container">
+  <div class="grid content">
+    <!-- - * - * - * - * ФИЛЬТР * - * - * - * -  -->
+    <div class="grid content_part filter">
+      <p>Фильтр</p>
+    </div>
 
-    <div class="block result_container">
-      <p id="PScreenID">0</p>
-      <div class="block img_container">
+
+    <!-- - * - * - * - * РЕЗУЛЬТАТ * - * - * - * -  -->
+    <div class="grid content_part result">
+      <div class="grid result_part btn btn_left">
+          <span id="button_previous">Предыдущая</span>
+      </div>
+      <div class="grid result_part img_grid">
         <img id='CurrentImageContainer' src="images/3.jpg" alt="">
       </div>
-      <div class="block parsing_info">
-        <span id="SpanTextName">Серый котенок</span><br>
-        <span id="SpanPriceValue">1 000 000</span>
+      <div class="grid result_part text_grid">
+        <p>ID: <span id="PScreenID">X</span> Дата: X Статус: X</p>
+        <p>Домен <span id="DomainName">X</span> Ссылка: <span id="Link">X</span></p>
+        <p>Название:<span id="SpanTextName">X</span></p>
+        <p>Цена: <span id="SpanPriceValue">X</span></p>
+      </div>
+      <div class="grid result_part btn btn_right">
+        <span id="button_next">Следующая</span>
       </div>
     </div>
-
-    <div class="button_previous">
-      <button id="button_previous" type="button" name="button">Предыдущая</button>
+    <!-- - * - * - * - * СПИСОК * - * - * - * -  -->
+    <div class="grid content_part list">
+      <p>Список</p>
+      <!-- <h2>список отобранных ссылок</h2> -->
     </div>
 
-    <div class="button_next">
-      <button id="button_next" type="button" name="button">Следующая</button>
-    </div>
-
-    <div class="block filter">
-      <h2>Форма отбора результатов</h2>
-
-    </div>
-    <div class="block result_list">
-      <h2>список отобранных ссылок</h2>
-    </div>
   </div>
 
 </body>
