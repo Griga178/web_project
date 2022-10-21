@@ -109,8 +109,17 @@
 }
 .text_grid{
   grid-column: 2 / 3;
-
   grid-row: 1 / 2;
+  gap:2px;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.text_info, .text_link {
+  grid-column: 1 / 2;
+}
+.text_name {
+  grid-column: 2 / 3;
+  grid-row: 1 / 3;
 }
 .img_grid {
   align-content : start;

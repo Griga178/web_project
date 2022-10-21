@@ -1,14 +1,21 @@
 function editPrice() {
   let currentSpanPrice = spanPriceValue.innerHTML
-  spanPriceValue.outerHTML = `<input type="text" onclick="closePriceEditor()" id="spanPriceValue" value="${currentSpanPrice}"></input>`
+  spanPriceValue.outerHTML = `<input type="text" data-price="${currentSpanPrice}"onclick="closePriceEditor()" id="spanPriceValue" value="${currentSpanPrice}"></input>`
   spanPriceValue.select()
 }
 function closePriceEditor(){
-  let currentInputPrice = spanPriceValue.value
-  if (validPrice = isPriceValid(currentInputPrice)){
+  let currentResultPrice = parseFloat(spanPriceValue.getAttribute('data-price'))
+  let validPrice = isPriceValid(spanPriceValue.value)
+  console.log(currentResultPrice, validPrice)
+  if (validPrice){
     spanPriceValue.outerHTML = `<span id="spanPriceValue">${validPrice}</span>`
     spanPriceValue.onclick = editPrice
-    postNewPrice(validPrice)
+
+    if (validPrice !== currentResultPrice){
+      console.log(typeof(validPrice), validPrice, '===', typeof parseFloat(currentResultPrice), parseFloat(currentResultPrice))
+      postNewPrice(validPrice)
+    }
+    else console.log('Цена не поменялась')
   }
   else {
     alert("Промерьте правильность цены!")
