@@ -16,12 +16,11 @@ function readFilteredQuery(){
   filteredQuery['only_last'] = lastResult.checked
   filteredQuery['get_checked'] = onlyCheckedTrue.checked
   filteredQuery['get_unchecked'] = onlyCheckedFalse.checked
-  // return filteredQuery
-  console.log(filteredQuery)
+
 }
 
 function domainFilter(){
-  let filter = searchDomain.value.toUpperCase();
+  let filter = searchDomainInput.value.toUpperCase();
   let shopList = domainList.getElementsByTagName('section')
   for (i = 0; i < shopList.length; i++) {
     txtValue = shopList[i].textContent || shopList[i].innerText;
@@ -36,14 +35,14 @@ function domainFilter(){
 function appendDomainToQuery(domainSpanObj){
   let domainId = domainSpanObj.getAttribute('data-id')
   listDomainId.push(domainId)
+  domainSpanObj.setAttribute("class", "text_span chosen")
   domainSpanObj.setAttribute('onclick', `deleteDomainFromQuery(this)`)
-  console.log(listDomainId)
 }
 function deleteDomainFromQuery(domainSpanObj){
   let domainId = domainSpanObj.getAttribute('data-id')
   // удаляем ID из списка
   let indexDelElem = listDomainId.indexOf(domainId)
   listDomainId.splice(indexDelElem, 1)
+  domainSpanObj.setAttribute("class", "text_span")
   domainSpanObj.setAttribute('onclick', `appendDomainToQuery(this)`)
-  console.log(listDomainId)
 }

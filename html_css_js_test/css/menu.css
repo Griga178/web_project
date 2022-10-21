@@ -38,10 +38,11 @@
   bottom: -5px;
   left: 50%;
   background: #feb386;
-  transition: .8s;
+  transition: .2s;
 }
 .menu-main a:hover:before, .menu-main .current:before {left: 0;}
 .menu-main a:hover:after, .menu-main .current:after {right: 0;}
+
 @media (max-width: 550px) {
 .menu-main {padding-top: 0;}
 .menu-main li {display: block;}

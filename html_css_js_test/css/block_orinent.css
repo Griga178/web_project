@@ -54,11 +54,15 @@
   cursor: pointer;
   opacity: 40%;
 }
-#searchDomain {
+#searchDomainInput {
   height: 20px;
   width: 250px;
 }
 
+.chosen {
+  font-weight: bold;
+  color: white;
+}
 /* - * - * - * - * ФИЛЬТР * - * - * - * -  */
 .filter {
   grid-column: 1 / 2;
@@ -109,7 +113,7 @@
   grid-row: 1 / 2;
 }
 .img_grid {
-  align-content : center;
+  align-content : start;
   justify-content: center;
   grid-column: 2 / 3;
   grid-row: 2 /2;

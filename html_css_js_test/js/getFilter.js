@@ -11,9 +11,7 @@
 function getDataForFilter() {
   dataForFilter = filterData
   fillFilterBlock(filterData)
-  console.log(dataForFilter)
-  console.log(startDateString)
-  console.log(endDateString)
+
 }
 
 function fillFilterBlock(filterData) {
@@ -35,7 +33,7 @@ function fillFilterBlock(filterData) {
     domainContent.setAttribute('data-id', `${filterData["domain_list"][indX].id}`)
     domainContent.setAttribute('onclick', `appendDomainToQuery(this)`)
 
-    domainContent.innerHTML = `${filterData["domain_list"][indX].domain_name}`;
+    domainContent.innerHTML = `${filterData["domain_list"][indX].domain_name} (${filterData["domain_list"][indX].result_amount})`;
 
     domainRow.appendChild(domainContent);
     domainList.appendChild(domainRow);

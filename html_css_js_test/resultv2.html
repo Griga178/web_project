@@ -9,7 +9,12 @@
   <script type="text/javascript" src="js/testData.js"></script>
   <script type="text/javascript" src="js/tempData.js"></script>
   <script type="text/javascript" src="js/getFilter.js"></script>
-  <script type="text/javascript" src="js/getFilterQuery.js"></script>
+  <script type="text/javascript" src="js/createQuery.js"></script>
+  <script type="text/javascript" src="js/getResult.js"></script>
+  <script type="text/javascript" src="js/changeResult.js"></script>
+  <script type="text/javascript" src="js/editResult.js"></script>
+
+  <script type="text/javascript" src="js/events.js"></script>
 
 </head>
 
@@ -33,7 +38,7 @@
       <div class="grid filter_part filter_box">
         <!-- фильтр по доменам -->
         <div class="grid domains" >
-          <input id="searchDomain" onkeyup="domainFilter()" type="search" placeholder="Поиск сайта">
+          <input id="searchDomainInput" onkeyup="domainFilter()" type="search" placeholder="Поиск сайта">
           <div id="domainList" class="rows_list">
           </div>
         </div>
@@ -50,11 +55,11 @@
           <input id="onlyCheckedTrue" type="checkbox" name="" value=""></label>
           <label for="onlyCheckedFalse"><span class="text_span">Не проверен</span>
           <input id="onlyCheckedFalse" type="checkbox" name="" value=""></label>
-          <label for="lastResult"> Только последний результат
+          <label for="lastResult"><span class="text_span">Только последний результат</span>
           <input id="lastResult" type="checkbox" > </label>
         </div>
         <div class="grid btn_submit">
-          <button type="button" name="button" onclick="readFilteredQuery()">Запросить</button>
+          <button type="button" name="button" onclick="getResultList()">Запросить</button>
         </div>
       </div>
 
@@ -71,33 +76,32 @@
 
     <!-- * - * - * - * - * - * - *   РЕЗУЛЬТАТ   * - * - * - * - * - * - * -->
     <div class="grid content_part result">
-      <div class="grid result_part btn btn_left" id="button_previous">
+      <div class="grid result_part btn btn_left" id="buttonPrevious">
           <span class="btn_span" >П</span>
       </div>
       <div class="grid result_part img_grid">
-        <img id='CurrentImageContainer' src="images/3.jpg" alt="">
+        <img id='CurrentImageContainer' src="" alt="Сделайте запрос">
       </div>
       <div class="grid result_part text_grid">
-        <p>ID: <span id="PScreenID">X</span> Дата: X Статус: X</p>
-        <p>Домен <span id="DomainName">X</span> Ссылка: <span id="Link">X</span></p>
-        <p>Название:<span id="SpanTextName">X</span></p>
-        <p>Цена: <span id="SpanPriceValue">X</span></p>
+        <p>ID: <span id="PScreenID">X</span> Дата: <span id="resultDate">X</span> Проверен: <span id="resultChecked">X</span></p>
+        <p>Домен <span id="DomainName">X</span> - - - <span id="Link">X</span></p>
+        <p>Название: <span id="spanTextName">X</span></p>
+        <p>Цена: <span id="spanPriceValue">X</span></p>
       </div>
-      <div class="grid result_part btn btn_right" id="button_next">
+      <div class="grid result_part btn btn_right" id="buttonNext">
         <span class="btn_span" >С</span>
       </div>
     </div>
     <!-- - * - * - * - * СПИСОК * - * - * - * -  -->
     <div class="grid content_part list">
-      <p>Список</p>
-      <!-- <h2>список отобранных ссылок</h2> -->
+      <ul id="resultIdListUl">
+      </ul>
+
+
+
     </div>
 
   </div>
 
 </body>
-<script type="text/javascript" src="js/start_change.js"></script>
-
-
-
 </html>

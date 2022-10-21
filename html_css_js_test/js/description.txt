@@ -1,69 +1,38 @@
-ВЕРСИЯ 1
-1 USER открывает РЕЗУЛЬТАТЫ.html
-1* - К. создает пустой список для id обрабатываемых результатов
-2 - К. запрашивает данные у сервера для заполнения ФИЛЬТРА
-3 - К. получает список для ФИЛЬТРА заполняет ЕГО
-4 USER в ФИЛЬТРЕ формирует запрос для поиска РЕЗУЛЬТАТОВ
-5 - К. делает запрос - получает список ID РЕЗУЛЬТАТОВ
-6 - К. запрашивает данные РЕЗУЛЬТАТА по ID (ПЕРВОГО ЭЛЕМЕНТА)
-7 - К. заполняет блоки РЕЗУЛЬТАТ + СПИСОК
-8 USER нажимает на кнопку "следующий/предыдущий" РЕЗУЛЬТАТ
-9 обработчик кнопок вызывает Ф.6 или возвращает false
-10 USER нажимает "Пробел"
-11 - К. меняет тег цены на форму "input" (можно изменить цену)
-12 USER нажимает "Enter"
-13 - К. менят цену AJAX POST
-14 USER нажимает "Enter" - (не меняя цену)
-15 - К. меняет статус - "Проверен" AJAX POST
-16 evenListiner btn.click() - left
-17 evenListiner btn.click() - right
-18 evenListiner btn.click() - space
-19 evenListiner btn.click() - enter
-20 evenListiner btn.click() - enter after space
 
+1 - getDataForFilter() --> filterData {}
+2 - fillFilterBlock(filterData)
 
-1 - let listResultId
-2 - getDataForFilter() --> filterData {}
-3 - fillFilterBlock(filterData)
 4 - readFilteredQuery() --> filteredQuery {}
-5 - getResultList(filteredQuery) --> listResultId []
-6 - getResulData(listResultId[0]) --> resultData {}
+x - domainFilter()
+x - appendDomainToQuery()
+x - deleteDomainFromQuery()
+
+5 - getResultList(filteredQuery) --> fill listResultId
+6 - getResultData(ResultId) --> resultData {}
 7 - fillResultBlock(resultData)
+
 8 - ... USER clickBtn/arrow left/Right
-9 - moveResult()  --> Func 6 or "Message"
+9 - changeResult()  --> Func 6 or "Message"
 10 - ... USER clickBtn/Space
 11 - changeResultPrice()
 12 - ... USER clickBtn/Enter (after Space)
 13 - postPrice(resultIndex)
 14 - ... USER clickBtn/Enter
 15 - postStatus(resultIndex)
+
 16 evenListiner btn.click() - left
 17 evenListiner btn.click() - right
 18 evenListiner btn.click() - space
 19 evenListiner btn.click() - enter
 20 evenListiner btn.click() - enter after space
 
-1 - активируется пользователем
-2 - прописана в HTML
-3 - активируется ф-ей № 2
-4 - активируется пользователем
-5 - активируется ф-ей № 4
-6 - активируется ф-ей № 5
-7 - активируется ф-ей № 6
-8 - активируется пользователем
-9 - активируется ф-ей № 16/17
-10 - активируется пользователем
-11 - активируется ф-ей № 18
-12 - активируется пользователем
-13 - активируется ф-ей № 20
-14 - активируется пользователем
-15 - активируется ф-ей № 19
 
 Файлы:
 testData
-tempData (1)
-getFilter (2, 3)
-getFilterQuery (4)
+tempData
+
+getFilter
+createQuery
 getResult (5, 6, 7)
 changeResult (9, 11)
 postResult (13, 15)
