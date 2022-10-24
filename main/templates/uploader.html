@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Загрузка{% endblock %}
+
+{% block content %}
+
+<h1>Загрузка файлов</h1>
+<script type=text/javascript src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
+<script type=text/javascript src="{{ url_for('static', filename='js/uploader/uploadFile.js') }}"></script>
+
+
+<div class="">
+
+  <form id="uploadFileForm" method="post" enctype="multipart/form-data">
+    <fieldset>
+        <label for="file">Выбрать файл (excel со столбцами: "Ссылка"("S" = 19), "Часть"("T" = 20))</label>
+        <input name="file" type="file">
+    </fieldset>
+    <fieldset>
+        <button id="uploadFileBtn" type="button">Загрузить</button>
+
+    </fieldset>
+  </form>
+
+</div>
+
+<script type="text/javascript">
+  $(function() {
+    $('#uploadFileBtn').click(function() {
+        var form_data = new FormData($('#uploadFileForm')[0]);
+
+        console.log(form_data)
+        $.ajax({
+            type: 'POST',
+            url: '/upload_file',
+            data: form_data,
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function(data) {
+                console.log(data);
+            },
+        });
+    });
+  })
+
+</script>
+{% endblock %}

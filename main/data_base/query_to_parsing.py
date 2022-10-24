@@ -35,3 +35,17 @@ def insert_parsing_result(parsing_results):
 def select_all_results():
     s_query = session.query(Parsing).all()
     return s_query
+
+def select_filtered_results(filtered_query):
+
+    if "domain_list" not in filtered_query:
+        results_frob_db = session.query(Parsing).filter(and_(Parsing.parsing_date >= filtered_query["start_date"], Parsing.parsing_date <= filtered_query["end_date"])).all()
+    else:
+        # print('domain filter', filtered_query["domain_list"])
+        # print('dates', filtered_query["start_date"], filtered_query["end_date"])
+        results_frob_db = session.query(Parsing).filter(and_(Parsing.parsing_date >= filtered_query["start_date"], Parsing.parsing_date <= filtered_query["end_date"])).join(Parsing.links).filter(Links.id_domain.in_(filtered_query["domain_list"])).all()
+    return results_frob_db
+
+def select_result_by_id(result_id):
+    s_query = session.query(Parsing).filter_by(id = result_id).one()
+    return s_query

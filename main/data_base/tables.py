@@ -13,6 +13,7 @@ class Links(Base):
     # id_model = Column(Integer, ForeignKey('models.id'))
     # id_kkn = Column(Integer, ForeignKey('kkns.id'))
     content = relationship("Parsing", backref = 'links')
+    # kknparts_mtm = relationship("KKNPart", secondary = association_table, back_populates = "links")
 
 class Domains(Base):
     'Домены'
@@ -40,3 +41,18 @@ class Parsing(Base):
     product_name = Column(Text)
     product_avaliable = Column(Boolean) # подумать
     user_changed = Column(Boolean)  # user_accept
+
+# class KKNPart(Base):
+#     "Часть из справочника ККН"
+#     __tablename__ = 'kknparts'
+#     id = Column(Integer, primary_key = True)
+#     number = Column(Integer)
+#     name = Column(String(255), nullable = False)
+#     links_mtm = relationship("Links", secondary = association_table, back_populates = "kknparts")
+#
+# association_table = Table(
+#     "association_table",
+#     Base.metadata,
+#     Column("kkn_id", ForeignKey("links.id")),
+#     Column("link_id", ForeignKey("kknparts.id")),
+# )

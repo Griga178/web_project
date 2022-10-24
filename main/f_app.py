@@ -17,18 +17,21 @@ from main.data_base.get_links_to_parser import get_links_to_parser
 from main.parser.run_parser import run_parser
 
 # просмотр результатова парсинга
-from main.parsing_result_view.result_to_js import prepare_data_to_js
+from main.parsing_result_view.get_data_for_filter import create_json_object_for_filter
+from main.parsing_result_view.get_data_for_result import get_results_list
+from main.parsing_result_view.get_result import get_result_with_jpg
 from main.parsing_result_view.send_image import image_sender
 
 # Главная страница
 @app.route('/')
 def main():
-    return render_template('main.html')
+    print('мы на главной')
+    return render_template('main.html', main_style = "current")
 
  #<- <- <- <- <- <- <- <- НАСТРОЙКИ ДОМЕНОВ -> -> -> -> -> -> -> ->
 @app.route('/domain_settings')
 def open_parser_setting():
-    return render_template('domain_settings.html')
+    return render_template('domain_settings.html', domain_style = "current")
 
 @app.route('/write_domain_list')
 def write_domain_list():
@@ -67,10 +70,36 @@ def add_new_link():
     link_from_db = add_link_to_db(new_link)
     return link_from_db
 
+@app.route('/uploader')
+def open_uploader():
+    return render_template('uploader.html', uploader_style = "current")
+# убираем отсюда
+def read_excel(file_obj):
+    import openpyxl
+    work_book = openpyxl.load_workbook(file_obj, read_only = True, data_only = True)
+    active_sheet = work_book.worksheets[0]
+    for string_xlsx_row in active_sheet.iter_rows(min_row = 2):
+        first_column_value = string_xlsx_row[0].value
+        print(first_column_value)
+# удаляем (проверка?)
+def file_recept(file_obj, app):
+    from werkzeug.utils import secure_filename
+    filename = secure_filename(file_obj.filename)
+    read_excel(file_obj)
+    return "ok"
+
+@app.route('/upload_file', methods = ['GET', 'POST'])
+def upload_file():
+    file = request.files.get('file')
+    print(file)
+    # answer = file_recept(file, app)
+    answer = read_excel(file)
+    return answer
+
 #<- <- <- <- <- <- <- <- ПРОСМОТР ТАБЛИЦ БД -> -> -> -> -> -> -> ->
 @app.route('/links_base')
 def open_links_base():
-    return render_template('links_base.html')
+    return render_template('links_base.html', db_style = "current")
 
 @app.route('/get_domain_links/<domain_id>')
 def write_domain_links(domain_id):
@@ -110,7 +139,7 @@ def get_links_by_domain_to_screen(domain_name):
 
 @app.route('/launch_parser')
 def get_parser_page():
-    return render_template('parser_page.html')
+    return render_template('parser.html', parser_style = "current")
 
 @app.route('/get_domain_for_setting')
 def get_domain_for_setting():
@@ -138,10 +167,10 @@ def start_parse():
     return "True"
 
 #<- <- <- <- <- <- <- <- РЕЗУЛЬТАТЫ ПАРСИНГА -> -> -> -> -> -> -> ->
-@app.route('/prv')
+@app.route('/result')
 def parsing_result_view():
-    json_dict = prepare_data_to_js()
-    return render_template('parsing_result_view.html', json_dict = json_dict)
+    json_dict = create_json_object_for_filter()
+    return render_template('result.html', result_style = "current", json_dict = json_dict)
 
 @app.route('/get_image/<result_id>')
 def send_image(result_id):
@@ -150,3 +179,13 @@ def send_image(result_id):
     except:
         base64_img = image_sender(0)
     return jsonify({'status': True, 'image': base64_img})
+#
+@app.route('/filtered_results', methods = ['GET', 'POST'])
+def get_filtered_result_list():
+    filtered_query = request.get_json()
+    results_list = get_results_list(filtered_query)
+    return results_list
+
+@app.route('/get_result_by_id/<res_id>')
+def get_result_by_id(res_id):
+    return get_result_with_jpg(res_id)
