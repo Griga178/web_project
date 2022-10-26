@@ -22,6 +22,9 @@ from main.parsing_result_view.get_data_for_result import get_results_list
 from main.parsing_result_view.get_result import get_result_with_jpg
 from main.parsing_result_view.send_image import image_sender
 
+# Загрузка файла на сервер
+from main.uploader.get_excel_data import read_excel
+
 # Главная страница
 @app.route('/')
 def main():
@@ -73,25 +76,10 @@ def add_new_link():
 @app.route('/uploader')
 def open_uploader():
     return render_template('uploader.html', uploader_style = "current")
-# убираем отсюда
-def read_excel(file_obj):
-    import openpyxl
-    work_book = openpyxl.load_workbook(file_obj, read_only = True, data_only = True)
-    active_sheet = work_book.worksheets[0]
-    for string_xlsx_row in active_sheet.iter_rows(min_row = 2):
-        first_column_value = string_xlsx_row[0].value
-        print(first_column_value)
-# удаляем (проверка?)
-def file_recept(file_obj, app):
-    from werkzeug.utils import secure_filename
-    filename = secure_filename(file_obj.filename)
-    read_excel(file_obj)
-    return "ok"
 
 @app.route('/upload_file', methods = ['GET', 'POST'])
 def upload_file():
     file = request.files.get('file')
-    print(file)
     # answer = file_recept(file, app)
     answer = read_excel(file)
     return answer
