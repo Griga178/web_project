@@ -27,3 +27,12 @@ def insert_new_domain(name_domain):
 def delete_domain(domain_id):
     ''' проверка на наличие связей с сылками '''
     pass
+
+def select_or_insert_domain(domain_name):
+    try:
+        domain_frob_db = session.query(Domains).filter_by(name = domain_name).one()
+    except NoResultFound:
+        domain_frob_db = Domains(name = domain_name)
+        session.add(domain_frob_db)
+        session.commit()
+    return domain_frob_db

@@ -27,3 +27,16 @@ def insert_links(links_list):
         Links(link = link, id_domain = domain_id)
         session.add(link_frob_db)
     session.commit()
+
+def insert_link(link_value, domain_id):
+    link_frob_db = Links(link = link_value, id_domain = domain_id)
+    session.add(link_frob_db)
+    session.commit()
+    return link_frob_db
+
+def select_or_insert_link(link_value, domain_id):
+    try:
+        link_frob_db = session.query(Links).filter_by(link = link_value).one()
+    except NoResultFound:
+        link_frob_db = insert_link(link_value, domain_id)
+    return link_frob_db

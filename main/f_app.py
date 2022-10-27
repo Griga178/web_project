@@ -23,13 +23,17 @@ from main.parsing_result_view.get_result import get_result_with_jpg
 from main.parsing_result_view.send_image import image_sender
 
 # Загрузка файла на сервер
-from main.uploader.get_excel_data import read_excel
+from main.uploader.insert_excel_data import read_excel
 
 # Главная страница
 @app.route('/')
 def main():
-    print('мы на главной')
     return render_template('main.html', main_style = "current")
+
+# Диаграммы
+@app.route('/dgrm')
+def diagrams_test():
+    return render_template('diagram.html', dgrm_style = "current")
 
  #<- <- <- <- <- <- <- <- НАСТРОЙКИ ДОМЕНОВ -> -> -> -> -> -> -> ->
 @app.route('/domain_settings')
