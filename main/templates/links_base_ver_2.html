@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}База ссылок{% endblock %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+{% block content %}
+
+<h1>База ссылок</h1>
+
+<table id="data" class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>lINK</th>
+        <th>Domain</th>
+        <!-- <th>Phone Number</th> -->
+        <!-- <th>Email</th> -->
+      </tr>
+    </thead>
+    <tbody>
+      {% for link in links %}
+        <tr>
+          <td>{{ link.id }}</td>
+          <td>{{ link.link[:25] }}</td>
+          <td>{{ link.domains.name }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+{% endblock %}

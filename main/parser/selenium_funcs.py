@@ -35,3 +35,27 @@ def find_element(driver, settings):
             answer_dict[set_type] = False
             # print(f'не удалось найти элемент {set_type}')
     return answer_dict
+
+def create_selenium_driver_ver2():
+    options = webdriver.ChromeOptions()
+    options.add_experimental_option('excludeSwitches', ['enable-logging']) # не выводит сообщения в консоль
+    options.add_argument("--start-maximized");
+    caps = DesiredCapabilities().CHROME
+    caps["pageLoadStrategy"] = "eager"
+    binary_yandex_driver_file = 'yandexdriver.exe'
+    driver = webdriver.Chrome(binary_yandex_driver_file, desired_capabilities = caps, options = options)
+    driver.implicitly_wait(1)
+    return driver
+
+def find_element_ver2(driver, settings):
+    split_setting = settings.split(';')
+    tag = split_setting[0]
+    atribute = split_setting[1]
+    atr_val = split_setting[2]
+    try:
+        some_xpath = f"//{tag}[@{atribute}='{atr_val}']"
+        found_info = driver.find_element_by_xpath(f"//{tag}[@{atribute}='{atr_val}']")
+        element_value = found_info.text
+    except:
+        element_value = False
+    return element_value

@@ -15,6 +15,7 @@ from main.domain_setting.get_domain_links_from_db import get_domain_links_from_d
 from main.parser.screen_shot_maker import start_make_screens_by_list
 from main.data_base.get_links_to_parser import get_links_to_parser
 from main.parser.run_parser import run_parser
+from main.parser.launch_parse import launch_parse
 
 # просмотр результатова парсинга
 from main.parsing_result_view.get_data_for_filter import create_json_object_for_filter
@@ -71,7 +72,7 @@ def delete_domain_settings():
     return {'answer':1}
 
 #<- <- <- <- <- <- <- <- ЗАГРУЗКА ФАЙЛОВ, ДАННЫХ -> -> -> -> -> -> -> ->
-@app.route('/add_new_link', methods = ['POST'])
+@app.route('/add_new_link', methods = ['POST']) # remove
 def add_new_link():
     new_link = request.form['link_input_form']
     link_from_db = add_link_to_db(new_link)
@@ -89,9 +90,15 @@ def upload_file():
     return answer
 
 #<- <- <- <- <- <- <- <- ПРОСМОТР ТАБЛИЦ БД -> -> -> -> -> -> -> ->
+from main.data_base.db_start import Links, engine
+from sqlalchemy.orm import sessionmaker
+DBSession = sessionmaker(bind = engine)
+session = DBSession()
 @app.route('/links_base')
 def open_links_base():
-    return render_template('links_base.html', db_style = "current")
+    links = session.query(Links).all()
+    # links = Links.query
+    return render_template('links_base_ver_2.html', db_style = "current", title = 'Bootstrap Table', links = links)
 
 @app.route('/get_domain_links/<domain_id>')
 def write_domain_links(domain_id):
@@ -104,19 +111,10 @@ def write_domain_links(domain_id):
 def show_all_links_domain_links():
     '''вывод всех ссылок всех доменов
     {domain:[[id,link],],}'''
-
     domains_and_links = get_all_links_sort_by_domains()
     return domains_and_links
 
-@app.route('/get_links_by_tag')
-def show_links_by_tag(tag_id):
-    pass
-
-def delete_links_from_db(link_id):
-    pass
-
 #<- <- <- <- <- <- <- <- ПАНЕЛЬ ПАРСИНГА -> -> -> -> -> -> -> ->
-
 @app.route('/parse_link/<link_id>')
 def trial_parse(link_id):
     'возвращает результат парсинга 1 ссылки'
@@ -155,7 +153,8 @@ def get_links_id_by_domain():
 def start_parse():
     '''отправляет на парсинг ссылки'''
     list_to_db = request.get_json()
-    run_parser(list_to_db)
+    # run_parser(list_to_db)
+    launch_parse(list_to_db)
     return "True"
 
 #<- <- <- <- <- <- <- <- РЕЗУЛЬТАТЫ ПАРСИНГА -> -> -> -> -> -> -> ->

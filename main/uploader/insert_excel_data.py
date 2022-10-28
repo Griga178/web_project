@@ -12,8 +12,6 @@ from main.data_base.query_to_association_table import select_insert_association
 # │   │   ├── link
 # │   │   ├── part
 
-
-
 def save_elements(excel_data_list):
     domain_set = set()
     part_set = set()
@@ -39,9 +37,9 @@ def save_elements(excel_data_list):
         link_obj = select_or_insert_link(link_value, domain_id)
         data_row[0] = link_obj.id
         data_row[2] = kkn_part_id
+        # добавляем связи ссылка - номер части
         assotiations = select_insert_association(kkn_part_id, link_obj.id)
         print(data_row, assotiations.kkn_id, assotiations.link_id)
-    # добавляем связи ссылка - номер части
 
 def read_excel(file_obj):
     ex_list = get_first_excel_list(file_obj)
