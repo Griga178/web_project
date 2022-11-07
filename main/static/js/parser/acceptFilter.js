@@ -1,9 +1,13 @@
 btnAcceptFilter.onclick = () => {
-  let idList = []
-  let inputObjArray = document.forms.part_form.getElementsByTagName("input")
-  console.log(inputObjArray);
+  let chekedIdList = []
+  // находим все input формы
+  let inputObjArray = filterKknParts.getElementsByTagName("input")
   for (input_obj in inputObjArray) {
-    idList.push(input_obj)
+    // выбираем те которые выбраны
+    if (inputObjArray[input_obj].checked){
+      // добавляем данные эл-ов в список
+      chekedIdList.push(inputObjArray[input_obj].dataset.partname)
+    }
   }
-  console.log(idList)
+  console.log(chekedIdList)
 }
