@@ -3,32 +3,46 @@
 {% block title %}Парсер{% endblock %}
 
 {% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/parserBlockOrient.css') }}">
 <script type=text/javascript src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
 
-<div class="filter_bar">
-  <h3>Фильтры</h3>
+<div class="grid content">
+  <div class="grid content_part listDomains">
+    <h3>Список доменов</h3>
+    <form id = 'filter_form'>
+    </form>
+    <button type="button" name="button" id = 'accept_btn'>Применить</button>
+  </div>
 
-  <form id = 'filter_form'>
-  </form>
-  <button type="button" name="button" id = 'accept_btn'>Применить</button>
+  <div class="grid content_part filter">
+    <h3>Фильтр</h3>
+    <div id="listKKNParts">
+
+      <form class="" id='filterKknParts' name='part_form'>
+        <label for="kknPart_1">3 часть
+        <input data-partNmae="3" type="checkbox" id="kknPart_1"></label>
+        <label for="kknPart_2">19 часть
+        <input data-partNmae="19" type="checkbox" id="kknPart_2"></label>
+        <button type="button" name="button" id="btnAcceptFilter">Применить</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="grid content_part result">
+    <h3>Что парсим</h3>
+    <table id ='tbl_chosen_link' border="1" cellpadding="5">
+
+    </table>
+    <form id = 'param_form'>
+
+    </form>
+  </div>
+
 </div>
 
-<br>
-
-<div class="chosen_link">
-  <table id ='tbl_chosen_link' border="1" cellpadding="5">
-
-  </table>
-</div>
-
-<div class="parser_parametres">
-  <form id = 'param_form'>
-
-  </form>
-
-</div>
 
 <script type=text/javascript src="{{ url_for('static', filename='js/launch_filter.js') }}"></script>
+<script type=text/javascript src="{{ url_for('static', filename='js/parser/acceptFilter.js') }}"></script>
 <!-- <script>draw_filter_block(filter_setting)  </script> -->
 <script>get_data_for_filter_block()  </script>
 

@@ -115,6 +115,10 @@ def show_all_links_domain_links():
     return domains_and_links
 
 #<- <- <- <- <- <- <- <- ПАНЕЛЬ ПАРСИНГА -> -> -> -> -> -> -> ->
+@app.route('/launch_parser')
+def get_parser_page():
+    return render_template('parser.html', parser_style = "current")
+
 @app.route('/parse_link/<link_id>')
 def trial_parse(link_id):
     'возвращает результат парсинга 1 ссылки'
@@ -126,10 +130,6 @@ def get_links_by_domain_to_screen(domain_name):
     domain_links = get_domain_links_from_db_by_name(domain_name)
     start_make_screens_by_list(domain_links)
     return "True"
-
-@app.route('/launch_parser')
-def get_parser_page():
-    return render_template('parser.html', parser_style = "current")
 
 @app.route('/get_domain_for_setting')
 def get_domain_for_setting():
