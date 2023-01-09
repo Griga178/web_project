@@ -25,16 +25,16 @@ from main.parsing_result_view.send_image import image_sender
 
 # Загрузка файла на сервер
 from main.uploader.insert_excel_data import read_excel
+from main.file_manager import insert_reestr
+
+# Просмотр загруженных файлов - содержимого
+
 
 # Главная страница
 @app.route('/')
 def main():
     return render_template('main.html', main_style = "current")
 
-# Диаграммы
-@app.route('/dgrm')
-def diagrams_test():
-    return render_template('diagram.html', dgrm_style = "current")
 
  #<- <- <- <- <- <- <- <- НАСТРОЙКИ ДОМЕНОВ -> -> -> -> -> -> -> ->
 @app.route('/domain_settings')
@@ -71,13 +71,14 @@ def delete_domain_settings():
     answer = delete_setting_from_db(setting_id)
     return {'answer':1}
 
-#<- <- <- <- <- <- <- <- ЗАГРУЗКА ФАЙЛОВ, ДАННЫХ -> -> -> -> -> -> -> ->
+#<- <- <- <- <- <- <- <- ЗАГРУЗКА ДАННЫХ -> -> -> -> -> -> -> ->
 @app.route('/add_new_link', methods = ['POST']) # remove
 def add_new_link():
     new_link = request.form['link_input_form']
     link_from_db = add_link_to_db(new_link)
     return link_from_db
 
+#<- <- <- <- <- <- <- <- ЗАГРУЗКА ФАЙЛОВ -> -> -> -> -> -> -> ->
 @app.route('/uploader')
 def open_uploader():
     return render_template('uploader.html', uploader_style = "current")
@@ -86,19 +87,20 @@ def open_uploader():
 def upload_file():
     file = request.files.get('file')
     # answer = file_recept(file, app)
-    answer = read_excel(file)
-    return answer
+    insert_reestr(file)
+    # answer = read_excel(file)
+    return 'answer'
 
 #<- <- <- <- <- <- <- <- ПРОСМОТР ТАБЛИЦ БД -> -> -> -> -> -> -> ->
-from main.data_base.db_start import Links, engine
-from sqlalchemy.orm import sessionmaker
-DBSession = sessionmaker(bind = engine)
-session = DBSession()
-@app.route('/links_base')
-def open_links_base():
-    links = session.query(Links).all()
-    # links = Links.query
-    return render_template('links_base_ver_2.html', db_style = "current", title = 'Bootstrap Table', links = links)
+# from main.data_base.db_start import Links, engine
+# from sqlalchemy.orm import sessionmaker
+# DBSession = sessionmaker(bind = engine)
+# session = DBSession()
+# @app.route('/links_base')
+# def open_links_base():
+#     links = session.query(Links).all()
+#     # links = Links.query
+#     return render_template('links_base_ver_2.html', db_style = "current", title = 'Bootstrap Table', links = links)
 
 @app.route('/get_domain_links/<domain_id>')
 def write_domain_links(domain_id):
