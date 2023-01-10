@@ -7,17 +7,15 @@ Base = declarative_base()
 class Okpd_2(Base):
     __tablename__ = 'okpd_2'
     id = Column(Integer, primary_key = True)
-    name = Column(Text)
-    id_okpd_2_parent = Column(ForeignKey("okpd_2_part.id"))
-    id_okpd_2_child = Column(ForeignKey("okpd_2_part.id"))
-    parent = relationship("Okpd_2_part", foreign_keys = 'Okpd_2.id_okpd_2_parent')
-    child = relationship("Okpd_2_part", foreign_keys = 'Okpd_2.id_okpd_2_child')
+    description = Column(Text)
+    id_parent_connection = Column(Integer, default = 0)
+    symbol = Column(Text)
     Kkns = relationship("Kkn", backref = 'okpd_2')
 
-class Okpd_2_part(Base):
-    __tablename__ = 'okpd_2_part'
-    id = Column(Integer, primary_key = True)
-    symbol = Column(Text)
+    @property
+    def get_okpd_2(self):
+        return f'{self.id_parent_connection}.{self.symbol}'
+
 
 class Kkn_part(Base):
     __tablename__ = 'kkn_part'
@@ -34,12 +32,21 @@ class Kkn(Base):
     detalization = Column(Integer)
     id_kkn_part = Column(ForeignKey("kkn_part.id"))
     # chars = relationship("Parsing", backref = 'links')
+    links = relationship("Kkn_link", backref = 'kkn')
 
+class Kkn_link(Base):
+    __tablename__ = 'kkn_link'
+    id = Column(Integer, primary_key = True)
+    id_link = Column(ForeignKey("link.id"))
+    id_kkn = Column(ForeignKey("kkn.id"))
+    id_source_type = Column(ForeignKey("source_type.id"))
+    source_date = Column(DateTime)
+    source_number = Column(Text)
 
-    links = relationship("Link", backref = 'kkn')
-    # source_type
-    # source_number
-    # source_date
+class Source_type(Base):
+    __tablename__ = 'source_type'
+    id = Column(Integer, primary_key = True)
+    name = Column(String(25), nullable = False)
 
 class Link(Base):
     __tablename__ = 'link'
@@ -47,6 +54,7 @@ class Link(Base):
     link = Column(String(255), nullable = False)
     id_domain = Column(Integer, ForeignKey('domain.id'))
     id_kkn = Column(ForeignKey("kkn.id"))
+    kkns = relationship("Kkn_link", backref = 'link')
 
 class Domain(Base):
     __tablename__ = 'domain'

@@ -9,5 +9,5 @@ def insert_upload(file_name, upload_date):
 
     upload_file_obj = Upload_history(name = file_name, upload_date = upload_date)
     session.add(upload_file_obj)
-    # session.commit()
+    session.commit()
     return upload_file_obj
