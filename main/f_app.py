@@ -24,10 +24,8 @@ from main.parsing_result_view.get_result import get_result_with_jpg
 from main.parsing_result_view.send_image import image_sender
 
 # Загрузка файла на сервер
-from main.uploader.insert_excel_data import read_excel
 from main.file_manager import insert_reestr
-
-# Просмотр загруженных файлов - содержимого
+from main.file_manager import get_files_info
 
 
 # Главная страница
@@ -81,15 +79,14 @@ def add_new_link():
 #<- <- <- <- <- <- <- <- ЗАГРУЗКА ФАЙЛОВ -> -> -> -> -> -> -> ->
 @app.route('/uploader')
 def open_uploader():
+    files_info = get_files_info()
     return render_template('uploader.html', uploader_style = "current")
 
 @app.route('/upload_file', methods = ['GET', 'POST'])
 def upload_file():
     file = request.files.get('file')
-    # answer = file_recept(file, app)
-    insert_reestr(file)
-    # answer = read_excel(file)
-    return 'answer'
+    file_obj = insert_reestr(file)
+    return file_obj
 
 #<- <- <- <- <- <- <- <- ПРОСМОТР ТАБЛИЦ БД -> -> -> -> -> -> -> ->
 # from main.data_base.db_start import Links, engine

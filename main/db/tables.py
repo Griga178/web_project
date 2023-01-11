@@ -12,9 +12,9 @@ class Okpd_2(Base):
     symbol = Column(Text)
     Kkns = relationship("Kkn", backref = 'okpd_2')
 
-    @property
-    def get_okpd_2(self):
-        return f'{self.id_parent_connection}.{self.symbol}'
+    # @property
+    # def get_okpd_2(self):
+    #     return f'{self.id_parent_connection}.{self.symbol}'
 
 
 class Kkn_part(Base):
@@ -53,15 +53,15 @@ class Link(Base):
     id = Column(Integer, primary_key = True)
     link = Column(String(255), nullable = False)
     id_domain = Column(Integer, ForeignKey('domain.id'))
-    id_kkn = Column(ForeignKey("kkn.id"))
     kkns = relationship("Kkn_link", backref = 'link')
+    files = relationship("File_link", backref = 'link')
 
 class Domain(Base):
     __tablename__ = 'domain'
     id = Column(Integer, primary_key = True)
     name = Column(String(255), nullable = False)
+    id_company = Column(Integer, ForeignKey('company.id'))
     links = relationship("Link", backref = 'domain')
-    id_companies = Column(Integer, ForeignKey('company.id'))
     id_domain_sett = relationship("Domain_settings", backref = 'domain')
 
 class Domain_settings(Base):
@@ -78,19 +78,20 @@ class Company(Base):
     inn = Column(Text)
     domains = relationship("Domain", backref = 'company')
 
-class Upload_history(Base):
-    __tablename__ = 'upload_history'
+class File(Base):
+    __tablename__ = 'file'
     id = Column(Integer, primary_key = True)
     upload_date = Column(DateTime)
     name = Column(Text)
-    kkns = relationship("Kkn_upload", backref = 'upload_history')
-    # parent = relationship("Okpd_2_part", foreign_keys = 'Okpd_2.id_okpd_2_parent')
+    # kkns = relationship("File_link", backref = 'file')
+    links = relationship("File_link", backref = 'file')
 
-class Kkn_upload(Base):
-    __tablename__ = 'kkn_upload'
+
+class File_link(Base):
+    __tablename__ = 'file_link'
     id = Column(Integer, primary_key = True)
-    id_upload_history = Column(ForeignKey("upload_history.id"))
-    id_kkn = Column(ForeignKey("kkn.id"))
+    id_file = Column(ForeignKey("file.id"))
+    id_link = Column(ForeignKey("link.id"))
 
 # class Chars(Base):
     # id = Column(Integer, primary_key = True)

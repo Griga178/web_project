@@ -20,9 +20,9 @@ def insert_kkn_link(**kwargs):
         kkn_link_obj = Kkn_link(
             id_link = kwargs['link_id'],
             id_kkn = kwargs['kkn_id'],
-            id_source_type = kwargs['kkn_id'],
-            source_date = kwargs['kkn_id'],
-            source_number = kwargs['kkn_id'],
+            id_source_type = kwargs['id_source_type'],
+            source_date = kwargs['source_date'],
+            source_number = kwargs['source_number'],
             )
         session.add(kkn_link_obj)
         session.commit()
