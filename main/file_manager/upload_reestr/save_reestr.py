@@ -7,9 +7,8 @@ from main.db.que_kkn_part import insert_kkn_part
 from main.db.que_company import insert_company
 from main.db.que_domain import insert_domain
 from main.db.que_link import insert_link
-from main.db.que_kkn_link import insert_kkn_link
 from main.db.que_file import insert_file
-from main.db.que_file_link import insert_file_link
+from main.db.que_file_kkn_link import insert_file_kkn_link
 
 from main.common_funcs import define_links
 from main.common_funcs import define_domain
@@ -40,15 +39,14 @@ def insert_reestr(file_name):
             for link in link_list:
                 # запись Ссылки
                 link_obj = insert_link(link, domain_obj.id)
-                # запись связи ссылка - ккн
-                kkn_link_obj = insert_kkn_link(
+                # запись связи ссылка - ккн - файл
+                kkn_link_obj = insert_file_kkn_link(
+                    file_id = file_obj.id,
                     link_id = link_obj.id,
                     kkn_id = kkn_obj.id,
                     id_source_type = source_info['source_type_id'],
                     source_date = datetime.strptime(source_info['source_date'], '%d.%m.%Y') if source_info['source_date'] else datetime(2000, 1, 1),
                     source_number = source_info['source_number']
                     )
-                # запись связи ссылка - файл
-                file_link_obj = insert_file_link(link_obj.id, file_obj.id)
 
     return file_obj

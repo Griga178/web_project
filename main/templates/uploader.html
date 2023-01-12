@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<h1>Загрузка файлов</h1>
+<h2>Загрузка файлов</h2>
 <script type=text/javascript src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
 <script type=text/javascript src="{{ url_for('static', filename='js/uploader/uploadFile.js') }}"></script>
 
@@ -13,7 +13,7 @@
 
   <form id="uploadFileForm" method="post" enctype="multipart/form-data">
     <fieldset>
-        <label for="file">Выбрать файл (excel со столбцами: "Ссылка"("S" = 19), "Часть"("T" = 20))</label>
+        <label for="file">Выбрать файл</label>
         <input name="file" type="file">
     </fieldset>
     <fieldset>
@@ -21,6 +21,21 @@
 
     </fieldset>
   </form>
+
+  <div class="">
+    <h2>История</h2>
+    {% for id, file in files_info.items() %}
+      <p>{{ id }}</p>
+      <p>{{ file['file_name'] }}</p>
+      <p>кол-во ккн:    {{ file['kkn_ammount'] }}</p>
+      <p>кол-во ссылок: {{ file['link_ammount_unic'] }} / {{ file['link_ammount_kontr'] }} (всего / контракты)</p>
+      <p>{{ file['file_obj'].name }}</p>
+      {% for part in file['parts'] %}
+      <p>Части: {{ part }}</p>
+      {% endfor %}
+    {% endfor %}
+
+  </div>
 
 </div>
 

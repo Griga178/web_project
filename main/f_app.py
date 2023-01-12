@@ -80,7 +80,7 @@ def add_new_link():
 @app.route('/uploader')
 def open_uploader():
     files_info = get_files_info()
-    return render_template('uploader.html', uploader_style = "current")
+    return render_template('uploader.html', uploader_style = "current", files_info = files_info)
 
 @app.route('/upload_file', methods = ['GET', 'POST'])
 def upload_file():

@@ -12,6 +12,10 @@ def insert_file(file_name, upload_date):
     session.commit()
     return file_obj
 
-def select_all_files():
-    list_files_obj = session.query(File).all()
+def select_all_files(file_id = False):
+    if not file_id:
+        list_files_obj = session.query(File).all()
+        
+    else:
+        list_files_obj = session.query(File).filter_by(id = file_id).all()
     return list_files_obj
