@@ -1,6 +1,10 @@
 from flask import render_template, request, make_response, jsonify
 from . import app
+import json
 
+# для настройки доменов
+from main.db.que_domain import select_domain_all
+# старое
 from main.domain_setting.add_link_to_db import add_link_to_db
 from main.domain_setting.get_domains_from_db import get_domains_from_db
 from main.domain_setting.get_domain_set_from_db import get_domain_set_from_db
@@ -37,7 +41,10 @@ def main():
  #<- <- <- <- <- <- <- <- НАСТРОЙКИ ДОМЕНОВ -> -> -> -> -> -> -> ->
 @app.route('/domain_settings')
 def open_parser_setting():
-    return render_template('domain_settings.html', domain_style = "current")
+    dom_obj_list = select_domain_all()
+    domain_dict = [dom_obj.to_dict for dom_obj in dom_obj_list]
+    jsonDomainList = json.dumps(domain_dict)
+    return render_template('domain_settings.html', domain_style = "current", jsonDomainList = jsonDomainList)
 
 @app.route('/write_domain_list')
 def write_domain_list():

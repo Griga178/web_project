@@ -51,6 +51,13 @@ class Link(Base):
     link = Column(String(255), nullable = False)
     id_domain = Column(Integer, ForeignKey('domain.id'))
     file_kkn_links = relationship("File_kkn_link", backref = 'link')
+    @property
+    def to_dict(self):
+        link_obj = {
+            'id': self.id,
+            'link': self.link,
+        }
+        return link_obj
 
 class Domain(Base):
     __tablename__ = 'domain'
@@ -58,7 +65,17 @@ class Domain(Base):
     name = Column(String(255), nullable = False)
     id_company = Column(Integer, ForeignKey('company.id'))
     links = relationship("Link", backref = 'domain')
-    id_domain_sett = relationship("Domain_settings", backref = 'domain')
+    domain_setts = relationship("Domain_settings", backref = 'domain')
+    @property
+    def to_dict(self):
+        dom_dict = {
+            'id': self.id,
+            'name': self.name,
+            'company': self.company.name,
+            'domain_setts': [d_s.to_dict for d_s in self.domain_setts],
+            'links': [link.to_dict for link in self.links]
+        }
+        return dom_dict
 
 class Domain_settings(Base):
     __tablename__ = 'domain_settings'
@@ -66,6 +83,14 @@ class Domain_settings(Base):
     id_domain = Column(Integer, ForeignKey('domain.id'))
     setting_name = Column(Text)
     setting_content = Column(Text)
+    @property
+    def to_dict(self):
+        set_dict = {
+            'id': self.id,
+            'setting_name': self.setting_name,
+            'setting_content': self.setting_content
+        }
+        return set_dict
 
 class Company(Base):
     __tablename__ = 'company'

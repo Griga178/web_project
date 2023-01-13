@@ -27,3 +27,7 @@ def insert_domain(dom_name, company_id):
         session.add(dom_obj)
         session.commit()
     return dom_obj
+
+def select_domain_all():
+    dom_obj_list = session.query(Domain).all()
+    return dom_obj_list

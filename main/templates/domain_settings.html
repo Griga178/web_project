@@ -7,36 +7,153 @@
 <script type=text/javascript src="{{ url_for('static', filename='js/write_domain_setting.js') }}"></script>
 <script type=text/javascript src="{{ url_for('static', filename='js/write_domain_links.js') }}"></script>
 <script type=text/javascript src="{{ url_for('static', filename='js/parse_one_link.js') }}"></script>
-
+<!-- - - - - - - - - - - - фильтры - - - - - - - - - - -  -->
+<script type=text/javascript src="{{ url_for('static', filename='js/filters/afil.js') }}"></script>
+<script type=text/javascript src="{{ url_for('static', filename='js/filters/domainFilterTable.js') }}"></script>
 
 <h1>Настройка доменов</h1>
 
 <!-- - - - - - - - - - - - СПИСОК ДОМЕНОВ - - - - - - - - - - -  -->
 <table id = 'domain_table'> </table>
-
-<script> write_domains() </script>
+<!-- <script> write_domains() </script> -->
 
 <!-- - - - - - - - - - - - БЛОК НАСТРОЕК ДОМЕНА - - - - - - - - - - -  -->
 <h3 id = 'domain_settings'></h3>
-
 <div id = "block_for_settings"> </div>
 
 <!-- - - - - - - - - - - - ВСТАВКА ССЫЛКИ - - - - - - - - - - -  -->
-<br>
+<!-- <br> -->
 <!-- action="javascript:past_link(this)" -->
-<form  method="post" >
-
+<!-- <form  method="post" >
   <label for="name">Вставьте ссылку:</label>
   <input id="link_input" type="text" name = 'link_input_form'>
   <input type="button" value="Отправить" onclick="past_link(this)">
-</form>
+</form> -->
 
 <!-- - - - - - - - - - - - СПИСОК ВСТАВЛЕННЫХ ССЫЛОК - - - - - - - - - - -  -->
-<h2>Список ссылок:</h2>
+<!-- <h2>Список ссылок:</h2>
 <ul id = 'pasted_links' >
 
-</ul>
+</ul> -->
+<!-- - - - - - - - - - - - ФИЛЬТРЫ - - - - - - - - - - -  -->
 
+<div class="domainFilterDiv">
+  <table id="domainFilterTable">
+    <!-- <thead>
+      <tr>
+        <th class="btn" onclick="sortTable(0)" >Домены</th>
+        <th class="btn" onclick="sortTable(1)">Кол-во ссылок (от)</th>
+        <th class="" >Настройки (есть/нет)</th>
+      </tr>
+      <tr>
+        <th><input type="text" id="domainInput" onkeyup="myFunction()" placeholder="Поиск.."></th>
+        <th><input type="number" name="" value=""></th>
+        <th><input type="checkbox" name="" value=""></th>
+      </tr>
+    </thead> -->
+    <tr class="filterDiv is">
+      <td>Alfreds Futterkiste</td>
+      <td>Germany</td>
+    </tr>
+    <tr class="filterDiv ko be">
+      <td>Berglunds snabbkop</td>
+      <td>Sweden</td>
+    </tr>
+    <tr class="filterDiv is">
+      <td>Island Trading</td>
+      <td>UK</td>
+    </tr>
+    <tr class="filterDiv ko">
+      <td>Koniglich Essen</td>
+      <td>Germany</td>
+    </tr>
+  </table>
+  <script type="text/javascript">
+    let filterDataObj = inputDomainObjects({{jsonDomainList | tojson | safe}});
+    drawDomainFilterTable(filterDataObj)
+  </script>
+  <!-- Control buttons -->
+<div id="myBtnContainer">
+  <button class="btn active" onclick="filterSelection('all')"> Show all</button>
+  <button class="btn" onclick="filterSelection('is')"> is</button>
+  <button class="btn" onclick="filterSelection('ko')"> ko</button>
+  <button class="btn" onclick="filterSelection('be')"> be</button>
+  <!-- <button class="btn" onclick="filterSelection('cars')"> is</button>
+  <button class="btn" onclick="filterSelection('animals')"> ko</button>
+  <button class="btn" onclick="filterSelection('fruits')"> be</button> -->
+  <!-- <button class="btn" onclick="filterSelection('colors')"> Colors</button> -->
+</div>
 
+<!-- The filterable elements. Note that some have multiple class names (this can be used if they belong to multiple categories) -->
+<!-- <div class="container">
+  <div class="filterDiv cars">BMW</div>
+  <div class="filterDiv colors fruits">Orange</div>
+  <div class="filterDiv cars">Volvo</div>
+  <div class="filterDiv colors">Red</div>
+  <div class="filterDiv cars animals">Mustang</div>
+  <div class="filterDiv colors">Blue</div>
+  <div class="filterDiv animals">Cat</div>
+  <div class="filterDiv animals">Dog</div>
+  <div class="filterDiv fruits">Melon</div>
+  <div class="filterDiv fruits animals">Kiwi</div>
+  <div class="filterDiv fruits">Banana</div>
+  <div class="filterDiv fruits">Lemon</div>
+  <div class="filterDiv animals">Cow</div> -->
+</div>
+<script type="text/javascript">
 
+  // filterSelection("all")
+  // Add active class to the current control button (highlight it)
+  var btnContainer = document.getElementById("myBtnContainer");
+  var btns = btnContainer.getElementsByClassName("btn");
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].addEventListener("click", function() {
+      var current = document.getElementsByClassName("active");
+      current[0].className = current[0].className.replace(" active", "");
+      this.className += " active";
+    });
+  }
+</script>
+<style>
+  .container {
+    overflow: hidden;
+  }
+
+  .filterDiv {
+    <!-- float: left; -->
+    background-color: #2196F3;
+    <!-- color: #ffffff; -->
+    <!-- width: 100px; -->
+    <!-- line-height: 100px; -->
+    text-align: center;
+    margin: 2px;
+    display: none; /* Hidden by default */
+  }
+
+  /* The "show" class is added to the filtered elements */
+  .show {
+    display: table-row;
+  }
+
+  /* Style the buttons */
+  .btn {
+    border: none;
+    outline: none;
+    padding: 12px 16px;
+    background-color: #f1f1f1;
+    cursor: pointer;
+  }
+
+  /* Add a light grey background on mouse-over */
+  .btn:hover {
+    background-color: #ddd;
+  }
+
+  /* Add a dark background to the active button */
+  .btn.active {
+    background-color: #666;
+    color: white;
+  }
+  </style>
+</div>
 {% endblock %}

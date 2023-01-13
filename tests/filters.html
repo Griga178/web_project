@@ -2,9 +2,28 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <script type=text/javascript src="srvData.js"></script>
+    <script type=text/javascript src="filters.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <title>Файл</title>
   </head>
   <body>
+    <div class="">
 
+      <p>Hello</p>
+
+      <button class="btn" type="button" name="button" id="btn" onclick="btn_click()">show data in log</button>
+
+      <h4 id="chosenDomain">Выбранные домен</h4>
+
+      <div id="myBtnContainer">
+        <button class="btn active" onclick="filterSelection('all')"> Выбрать все</button> <br>
+        <button class="btn domain" onclick="filterSelection('cars')"> citilink.ru</button> <br>
+        <button class="btn domain" onclick="filterSelection('animals')"> dns.ru</button> <br>
+        <button class="btn" onclick="filterSelection('fruits')"> onlinetrade.ru</button> <br>
+        <button class="btn" onclick="filterSelection('colors')"> xcom.ru</button> <br>
+      </div>
+
+    </div>
   </body>
 </html>
