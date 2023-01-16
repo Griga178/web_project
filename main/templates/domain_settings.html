@@ -9,6 +9,7 @@
 <script type=text/javascript src="{{ url_for('static', filename='js/parse_one_link.js') }}"></script>
 <!-- - - - - - - - - - - - фильтры - - - - - - - - - - -  -->
 <script type=text/javascript src="{{ url_for('static', filename='js/filters/afil.js') }}"></script>
+<script type=text/javascript src="{{ url_for('static', filename='js/settings/drawDomainTable.js') }}"></script>
 <script type=text/javascript src="{{ url_for('static', filename='js/filters/domainFilterTable.js') }}"></script>
 
 <h1>Настройка доменов</h1>
@@ -38,7 +39,8 @@
 <!-- - - - - - - - - - - - ФИЛЬТРЫ - - - - - - - - - - -  -->
 
 <div class="domainFilterDiv">
-  <table id="domainFilterTable">
+  <table id="domainFilterTable" class="table_sort">
+
     <!-- <thead>
       <tr>
         <th class="btn" onclick="sortTable(0)" >Домены</th>
@@ -51,27 +53,24 @@
         <th><input type="checkbox" name="" value=""></th>
       </tr>
     </thead> -->
-    <tr class="filterDiv is">
-      <td>Alfreds Futterkiste</td>
-      <td>Germany</td>
+    <!-- <tr class="filterDiv is">
+      <td data-filtered=0>Alfreds Futterkiste</td>
+      <td data-filtered=0>Germany</td>
     </tr>
     <tr class="filterDiv ko be">
-      <td>Berglunds snabbkop</td>
-      <td>Sweden</td>
+      <td data-filtered=0>Berglunds snabbkop</td>
+      <td data-filtered=0>Sweden</td>
     </tr>
     <tr class="filterDiv is">
-      <td>Island Trading</td>
-      <td>UK</td>
+      <td data-filtered=0>Island Trading</td>
+      <td data-filtered=0>UK</td>
     </tr>
     <tr class="filterDiv ko">
-      <td>Koniglich Essen</td>
-      <td>Germany</td>
-    </tr>
+      <td data-filtered=0>Koniglich Essen</td>
+      <td data-filtered=0>Germany</td>
+    </tr> -->
   </table>
-  <script type="text/javascript">
-    let filterDataObj = inputDomainObjects({{jsonDomainList | tojson | safe}});
-    drawDomainFilterTable(filterDataObj)
-  </script>
+
   <!-- Control buttons -->
 <div id="myBtnContainer">
   <button class="btn active" onclick="filterSelection('all')"> Show all</button>
@@ -154,6 +153,16 @@
     background-color: #666;
     color: white;
   }
+  #domainFilterTable{
+   overflow-y:scroll;
+   height:500px;
+   width:700px;
+   display:block;
+ }
   </style>
 </div>
+<script type="text/javascript">
+  let filterDataObj = inputDomainObjects({{jsonDomainList | tojson | safe}});
+  drawDomainFilterTable(filterDataObj)
+</script>
 {% endblock %}

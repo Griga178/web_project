@@ -1,77 +1,68 @@
-function myFunction() {
+// myFunction убирает строки в которых нет искомого значения
+// sortTable сортирует строки по выбранномустолбцу
+
+function myFunction(domainInputID) {
   // Declare variables
   var filter, tr, td, i, txtValue;
+  let domainInput = document.getElementById(domainInputID)
+  let cellIDSplit = domainInputID.split('_');
+  let cellID = cellIDSplit[cellIDSplit.length - 1]
+
+  // console.log(cellID)
   filter = domainInput.value.toUpperCase();
   tr = domainFilterTable.getElementsByTagName("tr");
 
   // Loop through all table rows, and hide those who don't match the search query
   for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[0];
+    let td_array = tr[i].getElementsByTagName("td") // Список ячеек в строке
+    td = tr[i].getElementsByTagName("td")[cellID]; // ячейка в которой ищем
+    let rowDisplayArray = [] // массив для определения display
+
     if (td) {
       txtValue = td.textContent || td.innerText;
       if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
+        td.dataset.filtered = "0"
       } else {
+        // если неудачный поиск помечаем ячейку
+        td.dataset.filtered = "1"
+      }
+      for (clmnIndex in td_array) {
+        if (td_array[clmnIndex].dataset) {
+        rowDisplayArray.push(td_array[clmnIndex].dataset.filtered)
+        }
+      }
+      if (rowDisplayArray.indexOf("1") != -1){
         tr[i].style.display = "none";
+      }
+      else {
+        tr[i].style.display = "";
       }
     }
   }
 }
 
-function sortTable(n) {
-  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-  table = domainFilterTable;
-  switching = true;
-  // Set the sorting direction to ascending:
-  dir = "asc";
-  /* Make a loop that will continue until
-  no switching has been done: */
-  while (switching) {
-    // Start by saying: no switching is done:
-    switching = false;
-    rows = table.rows;
-    /* Loop through all table rows (except the
-    first, which contains table headers): */
-    for (i = 2; i < (rows.length - 1); i++) {
-      // Start by saying there should be no switching:
-      shouldSwitch = false;
-      /* Get the two elements you want to compare,
-      one from current row and one from the next: */
-      x = rows[i].getElementsByTagName("TD")[n];
-      y = rows[i + 1].getElementsByTagName("TD")[n];
-      /* Check if the two rows should switch place,
-      based on the direction, asc or desc: */
-      if (dir == "asc") {
-        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-          // If so, mark as a switch and break the loop:
-          shouldSwitch = true;
-          break;
-        }
-      } else if (dir == "desc") {
-        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-          // If so, mark as a switch and break the loop:
-          shouldSwitch = true;
-          break;
-        }
-      }
-    }
-    if (shouldSwitch) {
-      /* If a switch has been marked, make the switch
-      and mark that a switch has been done: */
-      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-      switching = true;
-      // Each time a switch is done, increase this count by 1:
-      switchcount ++;
-    } else {
-      /* If no switching has been done AND the direction is "asc",
-      set the direction to "desc" and run the while loop again. */
-      if (switchcount == 0 && dir == "asc") {
-        dir = "desc";
-        switching = true;
-      }
-    }
-  }
-}
+// https://v3c.ru/javascript/sort-table
+document.addEventListener('DOMContentLoaded', () => {
+
+    const getSort = ({ target }) => {
+        const order = (target.dataset.order = -(target.dataset.order || -1));
+        const index = [...target.parentNode.cells].indexOf(target);
+        const collator = new Intl.Collator(['en', 'ru'], { numeric: true });
+        const comparator = (index, order) => (a, b) => order * collator.compare(
+            a.children[index].innerHTML,
+            b.children[index].innerHTML
+        );
+
+        for(const tBody of target.closest('table').tBodies)
+            tBody.append(...[...tBody.rows].sort(comparator(index, order)));
+
+        for(const cell of target.parentNode.cells)
+            cell.classList.toggle('sorted', cell === target);
+    };
+
+    document.querySelectorAll('.table_sort .theadNames').forEach(tableTH => tableTH.addEventListener('click', () => getSort(event)));
+
+});
 
 // КНОПОЧНЫЙ ФИЛЬТР
 
