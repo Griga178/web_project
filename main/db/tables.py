@@ -56,6 +56,7 @@ class Link(Base):
         link_obj = {
             'id': self.id,
             'link': self.link,
+            'files': [file.file.to_dict for file in self.file_kkn_links]
         }
         return link_obj
 
@@ -105,6 +106,14 @@ class File(Base):
     upload_date = Column(DateTime)
     name = Column(Text)
     file_kkn_links = relationship("File_kkn_link", backref = 'file')
+    @property
+    def to_dict(self):
+        file_dict = {
+            'id': self.id,
+            'name': self.name,
+            'upload_date': self.upload_date.strftime('%Y-%m-%d')
+        }
+        return file_dict
 
 # class Chars(Base):
     # id = Column(Integer, primary_key = True)

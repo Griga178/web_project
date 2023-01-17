@@ -1,45 +1,99 @@
-// myFunction убирает строки в которых нет искомого значения
+// columnSearchText убирает строки в которых нет искомого значения
+// columnFilterNumbFrom убирает строки в число >= искомого значения
+// columnFilterNumbTo убирает строки в число <= искомого значения
 // sortTable сортирует строки по выбранномустолбцу
 
-function myFunction(domainInputID) {
-  // Declare variables
-  var filter, tr, td, i, txtValue;
-  let domainInput = document.getElementById(domainInputID)
-  let cellIDSplit = domainInputID.split('_');
-  let cellID = cellIDSplit[cellIDSplit.length - 1]
-
-  // console.log(cellID)
-  filter = domainInput.value.toUpperCase();
-  tr = domainFilterTable.getElementsByTagName("tr");
-
-  // Loop through all table rows, and hide those who don't match the search query
+function columnSearchText(inputElement){
+  let columnIdSplit = inputElement.id.split('_');
+  let columnId = columnIdSplit[columnIdSplit.length - 1] // Номер столбца
+  let filter = inputElement.value.toUpperCase(); // Введенное значение
+  let tr = domainFilterTable.getElementsByTagName("tr"); // Список строк табл.
   for (i = 0; i < tr.length; i++) {
-    let td_array = tr[i].getElementsByTagName("td") // Список ячеек в строке
-    td = tr[i].getElementsByTagName("td")[cellID]; // ячейка в которой ищем
-    let rowDisplayArray = [] // массив для определения display
-
+    let td = tr[i].getElementsByTagName("td")[columnId]; // ячейка в которой ищем
     if (td) {
-      txtValue = td.textContent || td.innerText;
+      let txtValue = td.textContent || td.innerText; // содержимое ячейки
       if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        td.dataset.filtered = "0"
+        // удачный поиск
+        td.dataset.showCell = "1"
       } else {
-        // если неудачный поиск помечаем ячейку
-        td.dataset.filtered = "1"
+        // неудачный поиск
+        td.dataset.showCell = "0"
       }
-      for (clmnIndex in td_array) {
-        if (td_array[clmnIndex].dataset) {
-        rowDisplayArray.push(td_array[clmnIndex].dataset.filtered)
-        }
-      }
-      if (rowDisplayArray.indexOf("1") != -1){
-        tr[i].style.display = "none";
-      }
-      else {
-        tr[i].style.display = "";
-      }
+      updateRowVisible(tr[i]) // скрытие/показ строки
     }
   }
 }
+
+function columnFilterNumbFrom(inputElement){
+  let columnIdSplit = inputElement.id.split('_');
+  let columnId = columnIdSplit[columnIdSplit.length - 1] // Номер столбца
+  let filter = parseInt(inputElement.value); // Введенное значение
+  let tr = domainFilterTable.getElementsByTagName("tr"); // Список строк табл.
+  for (i = 0; i < tr.length; i++) {
+    let td = tr[i].getElementsByTagName("td")[columnId]; // ячейка в которой ищем
+    if (td) {
+      let numValue = parseInt(td.textContent) || parseInt(td.innerText); // содержимое ячейки
+      if (numValue >= filter || isNaN(filter)) {
+        // удачный поиск
+        td.dataset.showCell = "1"
+      } else {
+        // неудачный поиск
+        td.dataset.showCell = "0"
+      }
+      updateRowVisible(tr[i]) // скрытие/показ строки
+    }
+  }
+}
+
+function columnFilterNumbTo(inputElement){
+  let columnIdSplit = inputElement.id.split('_');
+  let columnId = columnIdSplit[columnIdSplit.length - 1] // Номер столбца
+  let filter = parseInt(inputElement.value); // Введенное значение
+  let tr = domainFilterTable.getElementsByTagName("tr"); // Список строк табл.
+  for (i = 0; i < tr.length; i++) {
+    let td = tr[i].getElementsByTagName("td")[columnId]; // ячейка в которой ищем
+    if (td) {
+      let numValue = parseInt(td.textContent) || parseInt(td.innerText); // содержимое ячейки
+      if (numValue <= filter || isNaN(filter)) {
+        // удачный поиск
+        td.dataset.showCell = "1"
+      } else {
+        // неудачный поиск
+        td.dataset.showCell = "0"
+      }
+      updateRowVisible(tr[i]) // скрытие/показ строки
+    }
+  }
+}
+
+function updateRowVisible(tableRow) {
+  let rowDisplayArray = [] // массив для определения display
+
+  let tdArray = tableRow.getElementsByTagName("td") // все ячейки в строке
+
+  if (tableRow.dataset.fileFiltered === '1'){ // проверка по файлу
+    for (cellIndex in tdArray) {
+      if (tdArray[cellIndex].dataset) {
+      rowDisplayArray.push(tdArray[cellIndex].dataset.showCell)
+      }
+    }
+    if (rowDisplayArray.indexOf("0") != -1){
+      // есть ячейки, которые не надо показывать
+      hideRow(tableRow)
+    }
+    else {
+      showRow(tableRow)
+    }
+  }
+  else {
+    hideRow(tableRow)
+  }
+
+
+}
+
+function hideRow(tableRow) {  tableRow.style.display = "none"}
+function showRow(tableRow) {  tableRow.style.display = "table-row"}
 
 // https://v3c.ru/javascript/sort-table
 document.addEventListener('DOMContentLoaded', () => {
@@ -66,39 +120,62 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // КНОПОЧНЫЙ ФИЛЬТР
 
+function filterSelection(btnDiv) {
+  let idFilesArr = btnDiv.dataset.files.split(',') // id фалов, которые оставляем
+  // let idFilesSet = new Set(idFilesArr)
 
-function filterSelection(c) {
-  var x, i;
-  x = document.getElementsByClassName("filterDiv");
-  if (c == "all") c = "";
-  // Add the "show" class (display:block) to the filtered elements, and remove the "show" class from the elements that are not selected
-  for (i = 0; i < x.length; i++) {
-    w3RemoveClass(x[i], "show");
-    if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
-  }
-}
+  let tr = domainFilterTable.getElementsByTagName("tr"); // Список строк табл.
+  for (i = 2; i < tr.length; i++) {
+    let rowIdFilesArr = tr[i].dataset.fileid // id фалов, связанных с доменом
 
-// Show filtered elements
-function w3AddClass(element, name) {
-  var i, arr1, arr2;
-  arr1 = element.className.split(" ");
-  arr2 = name.split(" ");
-  for (i = 0; i < arr2.length; i++) {
-    if (arr1.indexOf(arr2[i]) == -1) {
-      element.className += " " + arr2[i];
+    if (rowIdFilesArr) {
+      let intersection = idFilesArr.filter(x => rowIdFilesArr.includes(x));
+      // если есть пересечение то оставляем строки
+      if (Boolean(intersection.length)){
+        tr[i].dataset.fileFiltered = '1'
+        // console.log(rowIdFilesArr)
+      }
+      else {
+        tr[i].dataset.fileFiltered = '0'
+      }
     }
+    updateRowVisible(tr[i]) // скрытие/показ строки
   }
+
 }
 
-// Hide elements that are not selected
-function w3RemoveClass(element, name) {
-  var i, arr1, arr2;
-  arr1 = element.className.split(" ");
-  arr2 = name.split(" ");
-  for (i = 0; i < arr2.length; i++) {
-    while (arr1.indexOf(arr2[i]) > -1) {
-      arr1.splice(arr1.indexOf(arr2[i]), 1);
-    }
-  }
-  element.className = arr1.join(" ");
-}
+// function filterSelection(c) {
+//   var x, i;
+//   x = document.getElementsByClassName("filterDiv");
+//   if (c == "all") c = "";
+//   // Add the "show" class (display:block) to the filtered elements, and remove the "show" class from the elements that are not selected
+//   for (i = 0; i < x.length; i++) {
+//     w3RemoveClass(x[i], "show");
+//     if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
+//   }
+// }
+
+// // Show filtered elements
+// function w3AddClass(element, name) {
+//   var i, arr1, arr2;
+//   arr1 = element.className.split(" ");
+//   arr2 = name.split(" ");
+//   for (i = 0; i < arr2.length; i++) {
+//     if (arr1.indexOf(arr2[i]) == -1) {
+//       element.className += " " + arr2[i];
+//     }
+//   }
+// }
+//
+// // Hide elements that are not selected
+// function w3RemoveClass(element, name) {
+//   var i, arr1, arr2;
+//   arr1 = element.className.split(" ");
+//   arr2 = name.split(" ");
+//   for (i = 0; i < arr2.length; i++) {
+//     while (arr1.indexOf(arr2[i]) > -1) {
+//       arr1.splice(arr1.indexOf(arr2[i]), 1);
+//     }
+//   }
+//   element.className = arr1.join(" ");
+// }
