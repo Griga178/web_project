@@ -2,7 +2,7 @@ function createHeaderV2(){
   let information = [
     {    "name": "Домен",
           "search": [searchInputText]  },
-    {    "name": "Кол-во ссылок",
+    {    "name": "Кол-во ссылок (всего)",
         "search": [searchInputNumbFrom, searchInputNumbTo]  },
     {    "name": "Настройки (есть/нет)",
         "search": []  },
@@ -37,31 +37,6 @@ function createHeaderV2(){
   }
 }
 
-function searchInputText(columnId){
-  let inputElement = document.createElement('input')
-  inputElement.setAttribute('onkeyup', 'columnSearchText(this)')
-  inputElement.setAttribute('placeholder', 'Поиск..')
-  inputElement.setAttribute('id', `input_${columnId}`)
-  return inputElement
-}
-
-function searchInputNumbFrom(columnId){
-  let inputElement = document.createElement('input')
-  inputElement.setAttribute('type', 'number')
-  inputElement.setAttribute('onkeyup', 'columnFilterNumbFrom(this)')
-  inputElement.setAttribute('placeholder', 'От..')
-  inputElement.setAttribute('id', `input_${columnId}`)
-  return inputElement
-}
-function searchInputNumbTo(columnId){
-  let inputElement = document.createElement('input')
-  inputElement.setAttribute('type', 'number')
-  inputElement.setAttribute('onkeyup', 'columnFilterNumbTo(this)')
-  inputElement.setAttribute('placeholder', 'До..')
-  inputElement.setAttribute('id', `input_${columnId}`)
-  return inputElement
-}
-
 function createTableBody(domainObjectArray){
   let bodyBlock = document.createElement('tbody')
   domainFilterTable.appendChild(bodyBlock)
@@ -72,6 +47,8 @@ function createTableBody(domainObjectArray){
     bodyRow.setAttribute('class', "filterDiv")
     bodyRow.setAttribute('data-fileId', fileIdArray)
     bodyRow.setAttribute('data-fileFiltered', "1")
+    bodyRow.setAttribute('style', 'cursor: pointer')
+    bodyRow.setAttribute("onclick", `write_domain_setting(${domainObjectArray[domainInd].id}, "${domainObjectArray[domainInd].name}")`)
     bodyBlock.appendChild(bodyRow)
 
     let bodyRowCellDomain = document.createElement('td')
@@ -95,4 +72,30 @@ function createTableBody(domainObjectArray){
     bodyRowCellCompany.setAttribute('data-showCell', "1")
   }
 
+}
+
+function drawTableVerSecond(tableKeys, dataObjArray, tableId) {
+  let tableBlock = document.getElementById(tableId)
+  let tableBody = document.createElement('tbody')
+  tableBlock.appendChild(tableBody)
+  for (dataIndex in dataObjArray) {
+    let dataObject = dataObjArray[dataIndex]
+    let tableRow = document.createElement('tr')
+    tableRow.setAttribute('class', "filterDiv")
+    // tableRow.setAttribute('data-fileFiltered', "1")
+    tableRow.setAttribute('style', 'cursor: pointer')
+    tableBody.appendChild(tableRow)
+    // ОТРИСОВКА БЛОКА СТРОКИ
+    // for (i in tableKeys.filters) {
+    //   tableRow.setAttribute('data-fileId', [1])
+    // }
+    // ОТРИСОВКА БЛОКА ЯЧЕЙКИ
+    for (i in tableKeys.columns) {
+      let infoKey = tableKeys.columns[i] // объект от сервера
+      let tableCell = document.createElement('td')
+      tableCell.innerHTML = dataObject[infoKey.dataKey] // ключ содержимого
+      tableCell.setAttribute('data-showCell', "1")
+      tableRow.appendChild(tableCell)
+    }
+  }
 }

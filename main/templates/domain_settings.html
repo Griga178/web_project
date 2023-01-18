@@ -41,7 +41,7 @@
 <!-- - - - - - - - - - - - ФИЛЬТРЫ - - - - - - - - - - -  -->
 
 <div class="domainFilterDiv">
-  <table id="domainFilterTable" class="table_sort">
+  <table id="domainFilterTable" class="table_sort" style='float:left'>
 
   </table>
 
@@ -56,7 +56,6 @@
 
 <script type="text/javascript">
 
-  // filterSelection("all")
   // Add active class to the current control button (highlight it)
   var btnContainer = document.getElementById("myBtnContainer");
   var btns = btnContainer.getElementsByClassName("btn");
@@ -112,9 +111,10 @@
   #domainFilterTable{
    overflow-y:scroll;
    height:700px;
-   width:700px;
    display:block;
+   width: 900px;
  }
+
   </style>
 </div>
 <script type="text/javascript">

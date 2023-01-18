@@ -70,24 +70,23 @@ function updateRowVisible(tableRow) {
   let rowDisplayArray = [] // массив для определения display
 
   let tdArray = tableRow.getElementsByTagName("td") // все ячейки в строке
+  console.log(tableRow.dataset.fileFiltered)
+  // if (tableRow.dataset.fileFiltered === '1'){ // проверка по файлу
 
-  if (tableRow.dataset.fileFiltered === '1'){ // проверка по файлу
-    for (cellIndex in tdArray) {
-      if (tdArray[cellIndex].dataset) {
-      rowDisplayArray.push(tdArray[cellIndex].dataset.showCell)
-      }
-    }
-    if (rowDisplayArray.indexOf("0") != -1){
-      // есть ячейки, которые не надо показывать
-      hideRow(tableRow)
-    }
-    else {
-      showRow(tableRow)
+  // ЕСЛИ СОДЕРЖИМОЕ ЯЧЕЙКИ НЕ УДОВЛЕТВОРЯЕТ ПОИСКУ
+  // ЯЧЕЙКА ПОМЕЧАЕТСЯ "0"
+  for (cellIndex in tdArray) {
+    if (tdArray[cellIndex].dataset) {
+    rowDisplayArray.push(tdArray[cellIndex].dataset.showCell)
     }
   }
-  else {
-    hideRow(tableRow)
-  }
+  // ЕСЛИ ВО ВСЕЙ СТРОКЕ ЕСТЬ ХОТЬ 1 ЯЧЕЙКА С "0" - СТРОКА СКРЫВАЕТСЯ
+  if (rowDisplayArray.indexOf("0") != -1) hideRow(tableRow);
+  else showRow(tableRow);
+  // }
+  // else {
+  //   hideRow(tableRow)
+  // }
 
 
 }
@@ -121,8 +120,18 @@ document.addEventListener('DOMContentLoaded', () => {
 // КНОПОЧНЫЙ ФИЛЬТР
 
 function filterSelection(btnDiv) {
+  // если датасет === 0 - везде пишем "1" - показываем все
+  // убираем active из остальных элементов блока фильтров
+
+  // если есть id
+  // в элементе ставим active
+  // в список id добавляем id из датасета элемента
+
+  // проверяем строки на пересечение - действеум 1 / 0
+
+  let idSet = new Set()
+
   let idFilesArr = btnDiv.dataset.files.split(',') // id фалов, которые оставляем
-  // let idFilesSet = new Set(idFilesArr)
 
   let tr = domainFilterTable.getElementsByTagName("tr"); // Список строк табл.
   for (i = 2; i < tr.length; i++) {
@@ -153,29 +162,4 @@ function filterSelection(btnDiv) {
 //     w3RemoveClass(x[i], "show");
 //     if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
 //   }
-// }
-
-// // Show filtered elements
-// function w3AddClass(element, name) {
-//   var i, arr1, arr2;
-//   arr1 = element.className.split(" ");
-//   arr2 = name.split(" ");
-//   for (i = 0; i < arr2.length; i++) {
-//     if (arr1.indexOf(arr2[i]) == -1) {
-//       element.className += " " + arr2[i];
-//     }
-//   }
-// }
-//
-// // Hide elements that are not selected
-// function w3RemoveClass(element, name) {
-//   var i, arr1, arr2;
-//   arr1 = element.className.split(" ");
-//   arr2 = name.split(" ");
-//   for (i = 0; i < arr2.length; i++) {
-//     while (arr1.indexOf(arr2[i]) > -1) {
-//       arr1.splice(arr1.indexOf(arr2[i]), 1);
-//     }
-//   }
-//   element.className = arr1.join(" ");
 // }

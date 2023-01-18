@@ -69,12 +69,25 @@ class Domain(Base):
     domain_setts = relationship("Domain_settings", backref = 'domain')
     @property
     def to_dict(self):
+        # берем список ссылок
+        # из каждой ссылки берем список связей с файлами
+        # из каждой связи с файлом берем id файла
+        links_file_list = []
+        for my_link_obj in self.links:
+            links_file_list.append(my_link_obj.file_kkn_links)
+
+        files_id_set = set()
+        for file_kkn_obj_list in links_file_list:
+            for file_kkn_obj in file_kkn_obj_list:
+                files_id_set.add(file_kkn_obj.id_file)
+
         dom_dict = {
             'id': self.id,
             'name': self.name,
             'company': self.company.name,
-            'domain_setts': [d_s.to_dict for d_s in self.domain_setts],
-            'links': [link.to_dict for link in self.links]
+            'links_ammount': len(self.links),
+            'domain_setts_ammount': len(self.domain_setts),
+            'files_id_list': list(files_id_set)
         }
         return dom_dict
 
