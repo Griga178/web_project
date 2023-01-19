@@ -21,3 +21,8 @@ def insert_kkn_part(kkn_part_name):
         session.add(kkn_part_obj)
         session.commit()
     return kkn_part_obj
+
+
+def select_kkn_part_all():
+    list_kkn_part_obj = session.query(Kkn_part).all()
+    return list_kkn_part_obj

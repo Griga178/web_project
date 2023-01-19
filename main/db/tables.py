@@ -17,6 +17,20 @@ class Kkn_part(Base):
     id = Column(Integer, primary_key = True)
     name = Column(Text)
     kkns = relationship("Kkn", backref = 'kkn_part')
+    @property
+    def to_dict(self):
+
+        for kkn_obj in self.kkns: # список ккнов этой части
+            file_kkn_obj_list = kkn_obj.file_kkn_links # список файлов (+ ссылок) ккн-а
+            file_id_set = {file_kkn_obj.id_file for file_kkn_obj in file_kkn_obj_list}
+
+        kkn_part_obj = {
+            'id': self.id,
+            'name': self.name,
+            'kkns': [kkn.id for kkn in self.kkns],
+            'files_id_list': list(file_id_set)
+        }
+        return kkn_part_obj
 
 class Kkn(Base):
     __tablename__ = 'kkn'
@@ -69,17 +83,21 @@ class Domain(Base):
     domain_setts = relationship("Domain_settings", backref = 'domain')
     @property
     def to_dict(self):
+        # Ищем id файлов, связанных с доменом
         # берем список ссылок
         # из каждой ссылки берем список связей с файлами
         # из каждой связи с файлом берем id файла
-        links_file_list = []
+        links_file_kkn_list = []
         for my_link_obj in self.links:
-            links_file_list.append(my_link_obj.file_kkn_links)
+            links_file_kkn_list.append(my_link_obj.file_kkn_links)
 
         files_id_set = set()
-        for file_kkn_obj_list in links_file_list:
+        kkn_part_id_set = set() # + Ищем id частей ккн, связанных с доменом
+        for file_kkn_obj_list in links_file_kkn_list:
             for file_kkn_obj in file_kkn_obj_list:
                 files_id_set.add(file_kkn_obj.id_file)
+                kkn_part_id_set.add(file_kkn_obj.kkn.id_kkn_part)
+
 
         dom_dict = {
             'id': self.id,
@@ -87,7 +105,8 @@ class Domain(Base):
             'company': self.company.name,
             'links_ammount': len(self.links),
             'domain_setts_ammount': len(self.domain_setts),
-            'files_id_list': list(files_id_set)
+            'files_id_list': list(files_id_set),
+            'parts_id_list': list(kkn_part_id_set)
         }
         return dom_dict
 
@@ -124,7 +143,8 @@ class File(Base):
         file_dict = {
             'id': self.id,
             'name': self.name,
-            'upload_date': self.upload_date.strftime('%Y-%m-%d')
+            'upload_date': self.upload_date.strftime('%Y-%m-%d'),
+            'parts_id_list': list({file_kkn_obj.kkn.id_kkn_part for file_kkn_obj in self.file_kkn_links}) # части ккн в этом файле
         }
         return file_dict
 

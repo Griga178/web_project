@@ -4,6 +4,8 @@ import json
 
 # для настройки доменов
 from main.db.que_domain import select_domain_all
+from main.db.que_file import select_file_all
+from main.db.que_kkn_part import select_kkn_part_all
 # старое
 from main.domain_setting.add_link_to_db import add_link_to_db
 from main.domain_setting.get_domains_from_db import get_domains_from_db
@@ -42,9 +44,21 @@ def main():
 @app.route('/domain_settings')
 def open_parser_setting():
     dom_obj_list = select_domain_all()
+    file_obj_list = select_file_all()
+    kkn_part_obj_list = select_kkn_part_all()
+
     domain_dict = [dom_obj.to_dict for dom_obj in dom_obj_list]
-    jsonDomainList = json.dumps(domain_dict)
-    return render_template('domain_settings.html', domain_style = "current", jsonDomainList = jsonDomainList)
+    file_dict_list = [file_obj.to_dict for file_obj in file_obj_list]
+    part_dict_list = [part_obj.to_dict for part_obj in kkn_part_obj_list]
+
+    json_domain_list = json.dumps(domain_dict)
+    json_file_ist = json.dumps(file_dict_list)
+    json_part_list = json.dumps(part_dict_list)
+    return render_template('domain_settings.html',
+        domain_style = "current",
+        jsonDomainList = json_domain_list,
+        jsonFileList = json_file_ist,
+        jsonPartList = json_part_list)
 
 @app.route('/write_domain_list')
 def write_domain_list():

@@ -1,34 +1,15 @@
-// columnSearchText убирает строки в которых нет искомого значения
+// columnSearchText убирает строки в которых нет искомого значения - в common_funcs
 // columnFilterNumbFrom убирает строки в число >= искомого значения
 // columnFilterNumbTo убирает строки в число <= искомого значения
 // sortTable сортирует строки по выбранномустолбцу
-
-function columnSearchText(inputElement){
-  let columnIdSplit = inputElement.id.split('_');
-  let columnId = columnIdSplit[columnIdSplit.length - 1] // Номер столбца
-  let filter = inputElement.value.toUpperCase(); // Введенное значение
-  let tr = domainFilterTable.getElementsByTagName("tr"); // Список строк табл.
-  for (i = 0; i < tr.length; i++) {
-    let td = tr[i].getElementsByTagName("td")[columnId]; // ячейка в которой ищем
-    if (td) {
-      let txtValue = td.textContent || td.innerText; // содержимое ячейки
-      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        // удачный поиск
-        td.dataset.showCell = "1"
-      } else {
-        // неудачный поиск
-        td.dataset.showCell = "0"
-      }
-      updateRowVisible(tr[i]) // скрытие/показ строки
-    }
-  }
-}
 
 function columnFilterNumbFrom(inputElement){
   let columnIdSplit = inputElement.id.split('_');
   let columnId = columnIdSplit[columnIdSplit.length - 1] // Номер столбца
   let filter = parseInt(inputElement.value); // Введенное значение
-  let tr = domainFilterTable.getElementsByTagName("tr"); // Список строк табл.
+  // let tr = domainFilterTable.getElementsByTagName("tr"); // Список строк табл.
+  let currentTable = document.getElementById(`${inputElement.dataset.tableid}`)
+  let tr = currentTable.getElementsByTagName("tr"); // Список строк табл.
   for (i = 0; i < tr.length; i++) {
     let td = tr[i].getElementsByTagName("td")[columnId]; // ячейка в которой ищем
     if (td) {
@@ -49,7 +30,9 @@ function columnFilterNumbTo(inputElement){
   let columnIdSplit = inputElement.id.split('_');
   let columnId = columnIdSplit[columnIdSplit.length - 1] // Номер столбца
   let filter = parseInt(inputElement.value); // Введенное значение
-  let tr = domainFilterTable.getElementsByTagName("tr"); // Список строк табл.
+  // let tr = domainFilterTable.getElementsByTagName("tr"); // Список строк табл.
+  let currentTable = document.getElementById(`${inputElement.dataset.tableid}`)
+  let tr = currentTable.getElementsByTagName("tr"); // Список строк табл.
   for (i = 0; i < tr.length; i++) {
     let td = tr[i].getElementsByTagName("td")[columnId]; // ячейка в которой ищем
     if (td) {
@@ -70,23 +53,21 @@ function updateRowVisible(tableRow) {
   let rowDisplayArray = [] // массив для определения display
 
   let tdArray = tableRow.getElementsByTagName("td") // все ячейки в строке
-  console.log(tableRow.dataset.fileFiltered)
-  // if (tableRow.dataset.fileFiltered === '1'){ // проверка по файлу
+  // console.log(tableRow.dataset.fileFiltered)
+  if (tableRow.dataset.displayrow === '1'){ // проверка по файлу
 
-  // ЕСЛИ СОДЕРЖИМОЕ ЯЧЕЙКИ НЕ УДОВЛЕТВОРЯЕТ ПОИСКУ
-  // ЯЧЕЙКА ПОМЕЧАЕТСЯ "0"
-  for (cellIndex in tdArray) {
-    if (tdArray[cellIndex].dataset) {
-    rowDisplayArray.push(tdArray[cellIndex].dataset.showCell)
+    // ЕСЛИ СОДЕРЖИМОЕ ЯЧЕЙКИ НЕ УДОВЛЕТВОРЯЕТ ПОИСКУ
+    // ЯЧЕЙКА ПОМЕЧАЕТСЯ "0"
+    for (cellIndex in tdArray) {
+      if (tdArray[cellIndex].dataset) {
+      rowDisplayArray.push(tdArray[cellIndex].dataset.showCell)
+      }
     }
+    // ЕСЛИ ВО ВСЕЙ СТРОКЕ ЕСТЬ ХОТЬ 1 ЯЧЕЙКА С "0" - СТРОКА СКРЫВАЕТСЯ
+    if (rowDisplayArray.indexOf("0") != -1) hideRow(tableRow);
+    else showRow(tableRow);
   }
-  // ЕСЛИ ВО ВСЕЙ СТРОКЕ ЕСТЬ ХОТЬ 1 ЯЧЕЙКА С "0" - СТРОКА СКРЫВАЕТСЯ
-  if (rowDisplayArray.indexOf("0") != -1) hideRow(tableRow);
-  else showRow(tableRow);
-  // }
-  // else {
-  //   hideRow(tableRow)
-  // }
+  else hideRow(tableRow)
 
 
 }
@@ -119,47 +100,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // КНОПОЧНЫЙ ФИЛЬТР
 
-function filterSelection(btnDiv) {
-  // если датасет === 0 - везде пишем "1" - показываем все
-  // убираем active из остальных элементов блока фильтров
+function filterSelection(tableRowObj) {
+  // находим список строк на которые распростроняется фильтр
+  // (во всех таблицах)
+  let filterNameText = tableRowObj.dataset.filtername
+  let rowArray = document.querySelectorAll(`[data-${filterNameText}]`);
+  // по какому id будем фильтровать
+  let rowId = tableRowObj.dataset.primarykey
+  console.log(rowId)
 
-  // если есть id
+  // добавить датасет в <table data-chosen = [1,2]>
+  // для отслеживание выбранных фильтров
   // в элементе ставим active
   // в список id добавляем id из датасета элемента
 
-  // проверяем строки на пересечение - действеум 1 / 0
+  let idFilesArr = [rowId] // этот список надо брать из таблицы в которой лежит фильтр
 
-  let idSet = new Set()
-
-  let idFilesArr = btnDiv.dataset.files.split(',') // id фалов, которые оставляем
-
-  let tr = domainFilterTable.getElementsByTagName("tr"); // Список строк табл.
-  for (i = 2; i < tr.length; i++) {
-    let rowIdFilesArr = tr[i].dataset.fileid // id фалов, связанных с доменом
+  for (i = 2; i < rowArray.length; i++) {
+    let rowIdFilesArr = rowArray[i].dataset[filterNameText] // список id фалов, связанных с доменом
 
     if (rowIdFilesArr) {
       let intersection = idFilesArr.filter(x => rowIdFilesArr.includes(x));
       // если есть пересечение то оставляем строки
       if (Boolean(intersection.length)){
-        tr[i].dataset.fileFiltered = '1'
-        // console.log(rowIdFilesArr)
+        rowArray[i].dataset.displayrow = '1'
       }
       else {
-        tr[i].dataset.fileFiltered = '0'
+        rowArray[i].dataset.displayrow = '0'
       }
     }
-    updateRowVisible(tr[i]) // скрытие/показ строки
+    updateRowVisible(rowArray[i]) // скрытие/показ строки
   }
-
 }
-
-// function filterSelection(c) {
-//   var x, i;
-//   x = document.getElementsByClassName("filterDiv");
-//   if (c == "all") c = "";
-//   // Add the "show" class (display:block) to the filtered elements, and remove the "show" class from the elements that are not selected
-//   for (i = 0; i < x.length; i++) {
-//     w3RemoveClass(x[i], "show");
-//     if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
-//   }
-// }

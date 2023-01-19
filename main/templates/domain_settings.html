@@ -10,9 +10,9 @@
 <!-- - - - - - - - - - - - фильтры - - - - - - - - - - -  -->
 <script type=text/javascript src="{{ url_for('static', filename='js/filters/afil.js') }}"></script>
 <script type=text/javascript src="{{ url_for('static', filename='js/settings/drawDomainTable.js') }}"></script>
-<script type=text/javascript src="{{ url_for('static', filename='js/settings/drawPartFilter.js') }}"></script>
 <script type=text/javascript src="{{ url_for('static', filename='js/settings/createFilters.js') }}"></script>
-<script type=text/javascript src="{{ url_for('static', filename='js/settings/drawFileFilter.js') }}"></script>
+<script type=text/javascript src="{{ url_for('static', filename='js/settings/drawTables.js') }}"></script>
+
 
 <h1>Настройка доменов</h1>
 
@@ -42,9 +42,11 @@
 
 <div class="domainFilterDiv">
   <table id="domainFilterTable" class="table_sort" style='float:left'>
-
   </table>
-
+  <table id="fileFilterTable" class="table_sort" >
+  </table>
+  <table id="partFilterTable" class="table_sort" >
+  </table>
   <!-- Control buttons -->
 <div id="myBtnContainer">
   <button class="btn active" data-files="1,2" onclick="filterSelection(this)"> Show all</button>
@@ -118,7 +120,13 @@
   </style>
 </div>
 <script type="text/javascript">
-  let filterDataObj = inputDomainObjects({{jsonDomainList | tojson | safe}});
-  drawDomainFilterTable(filterDataObj)
+  // let filterDataObj = inputDomainObjects({{jsonDomainList | tojson | safe}});
+  // drawDomainFilterTable(filterDataObj)
+  let filterDataObj = {{jsonDomainList | tojson | safe}};
+  let fileFilterObjArray = {{jsonFileList | tojson | safe}};
+  let partFilterObjArray = {{jsonPartList | tojson | safe}};
+
 </script>
+<script type=text/javascript src="{{ url_for('static', filename='js/settings/tableKeys.js') }}"></script>
+
 {% endblock %}

@@ -1,14 +1,18 @@
 function inputDomainObjects(jsonDomainList) {
   let filterDataObj = JSON.parse(jsonDomainList)
-  console.log(filterDataObj)
+  // console.log(filterDataObj)
   return filterDataObj
 }
 
-
+function readJsonFromSrv(jsonObject) {
+  return JSON.parse(jsonObject)
+}
 
 let tableKeys = {
-  "filters": [
-
+  "htmlTableId": "domainFilterTable",
+  "foreignFilters": [
+    "files_id_list",
+    "path_id_set"
   ],
   "columns": [
     {
@@ -33,16 +37,8 @@ let tableKeys = {
     }
   ]
 }
-function drawDomainFilterTable(filterDataObj) {
-
-  createHeaderV2()
-  // createTableBody(filterDataObj)
-  drawTableVerSecond(tableKeys, filterDataObj, 'domainFilterTable')
-
-}
 let foreignFilterFile = {
-  "foreignKey": "files_id_list",
-  "primaryKey": "id",
+  "filterKey": "files_id_list",
   "columns": [
     {
       "name": "Название файла",
@@ -56,21 +52,30 @@ let foreignFilterFile = {
     },
   ]
 }
+function drawDomainFilterTable(filterDataObj) {
+
+  // createHeaderV2()
+  // createTableBody(filterDataObj)
+  createHeaderV3(tableKeys, 'domainFilterTable')
+  drawTableVerSecond(tableKeys, filterDataObj, 'domainFilterTable')
+  // createHeaderV3(foreignFilterFile, 'fileFilterTable')
+  // drawTableVerSecond(foreignFilterFile, foreignFilterdataObj, 'fileFilterTable')
+
+}
+
   let foreignFilterPath = {
-    "foreignKey": "path_id_set", // нужен новый запрос - инфа из БД
+    "filterKey": "path_id_set",
     "primaryKey": "id",
     "columns": [
       {
         "name": "Название Части",
         "searchBy": searchInputText,
         "dataKey": "name",
-        "dataFunc": false,
       },
       {
         "name": "Дата загрузки",
         "searchBy": searchInputText,
         "dataKey": "upload_date",
-        "dataFunc": false,
       },
     ]
 }
