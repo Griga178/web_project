@@ -50,6 +50,11 @@ function columnFilterNumbTo(inputElement){
 }
 
 function updateRowVisible(tableRow) {
+  // показ кнопки сброса фильтров
+  let currentTable = tableRow.parentNode.parentNode
+  let clearBtn = currentTable.getElementsByTagName('button')[0]
+  clearBtn.style.display = "block"
+
   let rowDisplayArray = [] // массив для определения display
 
   let tdArray = tableRow.getElementsByTagName("td") // все ячейки в строке
@@ -69,12 +74,12 @@ function updateRowVisible(tableRow) {
   }
   else hideRow(tableRow)
 
-
 }
 
 function hideRow(tableRow) {  tableRow.style.display = "none"}
 function showRow(tableRow) {  tableRow.style.display = "table-row"}
 
+// функция сортировки getSort
 // https://v3c.ru/javascript/sort-table
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -101,26 +106,39 @@ document.addEventListener('DOMContentLoaded', () => {
 // КНОПОЧНЫЙ ФИЛЬТР
 
 function filterSelection(tableRowObj) {
+  // таблица в которой находится данный фильтр
+  let currentTable = tableRowObj.parentNode.parentNode
+  // список в котором содержатся выбранные фильтры
+  let chosenPrimaryKeys = currentTable.dataset.chosenkeys
   // находим список строк на которые распростроняется фильтр
   // (во всех таблицах)
-  let filterNameText = tableRowObj.dataset.filtername
+  let filterNameText = tableRowObj.dataset.filtername // название фильтра
   let rowArray = document.querySelectorAll(`[data-${filterNameText}]`);
   // по какому id будем фильтровать
   let rowId = tableRowObj.dataset.primarykey
-  console.log(rowId)
 
   // добавить датасет в <table data-chosen = [1,2]>
+  if (chosenPrimaryKeys) { // если уже есть выделенные фильтры
+
+    if (chosenPrimaryKeys.indexOf(rowId) != -1) {
+      chosenPrimaryKeys.push(rowId)
+    }
+    else {
+      // chosenPrimaryKeys.del(rowId)
+    }
+  }
+  else {chosenPrimaryKeys = [rowId]}
   // для отслеживание выбранных фильтров
   // в элементе ставим active
   // в список id добавляем id из датасета элемента
 
-  let idFilesArr = [rowId] // этот список надо брать из таблицы в которой лежит фильтр
+  // let idFilesArr = [rowId] // этот список надо брать из таблицы в которой лежит фильтр
 
   for (i = 2; i < rowArray.length; i++) {
     let rowIdFilesArr = rowArray[i].dataset[filterNameText] // список id фалов, связанных с доменом
 
     if (rowIdFilesArr) {
-      let intersection = idFilesArr.filter(x => rowIdFilesArr.includes(x));
+      let intersection = chosenPrimaryKeys.filter(x => rowIdFilesArr.includes(x));
       // если есть пересечение то оставляем строки
       if (Boolean(intersection.length)){
         rowArray[i].dataset.displayrow = '1'
@@ -131,4 +149,9 @@ function filterSelection(tableRowObj) {
     }
     updateRowVisible(rowArray[i]) // скрытие/показ строки
   }
+  // показ кнопки сброса фильтров
+
+  let clearBtn = currentTable.getElementsByTagName('button')[0]
+  clearBtn.style.display = "block"
+
 }
