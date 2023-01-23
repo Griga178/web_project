@@ -1,6 +1,7 @@
 from main.file_manager.read_excel import excel_to_lists
 
 def read_reestr(file_name):
+    print("начали загрузкку...")
 
     kwargs = {
         'headers_names': ["ОКПД2",

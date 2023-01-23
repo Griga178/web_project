@@ -7,11 +7,14 @@
 <script type=text/javascript src="{{ url_for('static', filename='js/write_domain_setting.js') }}"></script>
 <script type=text/javascript src="{{ url_for('static', filename='js/write_domain_links.js') }}"></script>
 <script type=text/javascript src="{{ url_for('static', filename='js/parse_one_link.js') }}"></script>
-<!-- - - - - - - - - - - - фильтры - - - - - - - - - - -  -->
-<script type=text/javascript src="{{ url_for('static', filename='js/filters/afil.js') }}"></script>
-<script type=text/javascript src="{{ url_for('static', filename='js/settings/drawDomainTable.js') }}"></script>
-<script type=text/javascript src="{{ url_for('static', filename='js/settings/createFilters.js') }}"></script>
-<script type=text/javascript src="{{ url_for('static', filename='js/settings/drawTables.js') }}"></script>
+<!-- - - - - - - - - - - - таблицы и фильтры - - - - - - - - - - -  -->
+<script type=text/javascript src="{{ url_for('static', filename='js/common_funcs/like_in_python.js') }}"></script>
+<script type=text/javascript src="{{ url_for('static', filename='js/common_funcs/table/btnFilter.js') }}"></script>
+<script type=text/javascript src="{{ url_for('static', filename='js/common_funcs/table/searchFilters.js') }}"></script>
+<script type=text/javascript src="{{ url_for('static', filename='js/common_funcs/table/inputCreator.js') }}"></script>
+<script type=text/javascript src="{{ url_for('static', filename='js/common_funcs/table/sortFunc.js') }}"></script>
+<script type=text/javascript src="{{ url_for('static', filename='js/common_funcs/table/rowVisible.js') }}"></script>
+<script type=text/javascript src="{{ url_for('static', filename='js/common_funcs/table/drawTable.js') }}"></script>
 
 
 <h1>Настройка доменов</h1>
@@ -47,32 +50,8 @@
   </table>
   <table id="partFilterTable" class="table_sort" >
   </table>
-  <!-- Control buttons -->
-<div id="myBtnContainer">
-  <button class="btn active" data-files="1,2" onclick="filterSelection(this)"> Show all</button>
-  <button class="btn" data-files="1" onclick="filterSelection(this)"> файл id 1</button>
-  <button class="btn" data-files="2" onclick="filterSelection(this)"> файл id 2</button>
 
-</div>
-
-
-<script type="text/javascript">
-
-  // Add active class to the current control button (highlight it)
-  var btnContainer = document.getElementById("myBtnContainer");
-  var btns = btnContainer.getElementsByClassName("btn");
-  for (var i = 0; i < btns.length; i++) {
-    btns[i].addEventListener("click", function() {
-      var current = document.getElementsByClassName("active");
-      current[0].className = current[0].className.replace(" active", "");
-      this.className += " active";
-    });
-  }
-</script>
 <style>
-  .container {
-    overflow: hidden;
-  }
 
   .filterDiv {
     <!-- float: left; -->
@@ -84,11 +63,6 @@
     margin: 2px;
     display: table-row;
     /* display: none;  Hidden by default */
-  }
-
-  /* The "show" class is added to the filtered elements */
-  .show {
-    display: table-row;
   }
 
   /* Style the buttons */
@@ -106,10 +80,11 @@
   }
 
   /* Add a dark background to the active button */
-  .btn.active {
+  .btn.active_btn {
     background-color: #666;
     color: white;
   }
+
   #domainFilterTable{
    overflow-y:scroll;
    height:700px;
@@ -120,8 +95,6 @@
   </style>
 </div>
 <script type="text/javascript">
-  // let filterDataObj = inputDomainObjects({{jsonDomainList | tojson | safe}});
-  // drawDomainFilterTable(filterDataObj)
   let filterDataObj = {{jsonDomainList | tojson | safe}};
   let fileFilterObjArray = {{jsonFileList | tojson | safe}};
   let partFilterObjArray = {{jsonPartList | tojson | safe}};
