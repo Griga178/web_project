@@ -27,3 +27,14 @@ def insert_link(link, id_domain):
         session.add(link_obj)
         session.commit()
     return link_obj
+
+def select_links_by_domain_id(domain_id):
+    db_answer = []
+
+    links_frob_db = session.query(Link).filter_by(id_domain = domain_id).all()
+
+    for links in links_frob_db:
+
+        db_answer.append(links.to_dict)
+
+    return db_answer

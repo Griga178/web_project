@@ -3,6 +3,7 @@ let mainTableKeys = {
   "htmlTableId": "domainFilterTable",
   "dataArray": readJsonFromSrv(filterDataObj),
   "rowFunc": "loadDomainSetting(this)", // при нажатии на строку срабатывает эта ф-я
+  //
   "foreignConnection": [
     "files_id_list",
     "parts_id_list"

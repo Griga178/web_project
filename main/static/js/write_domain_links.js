@@ -21,13 +21,16 @@ function write_links_list(links_array) {
     new_li = document.createElement('li')
     // new_li.setAttribute('id', `${links_array[i][0]}`)
     new_a = document.createElement('a')
-    new_a.setAttribute('href', `${links_array[i][1]}`)
+    // new_a.setAttribute('href', `${links_array[i][1]}`)
+    new_a.setAttribute('href', `${links_array[i].link}`)
     new_a.setAttribute('target', '_blank')
-    new_a.innerHTML = `${links_array[i][0]} - - ${links_array[i][1]}`
+    // new_a.innerHTML = `${links_array[i][0]} - - ${links_array[i][1]}`
+    new_a.innerHTML = `${links_array[i].id} - - ${links_array[i].link}`
     new_li.appendChild(new_a)
     pasted_links.appendChild(new_li)
 
-    parse_btn = draw_parse_btn(links_array[i][0])
+    // parse_btn = draw_parse_btn(links_array[i][0])
+    parse_btn = draw_parse_btn(links_array[i].id)
     new_li.appendChild(parse_btn)
   }
 }

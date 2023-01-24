@@ -6,6 +6,10 @@ import json
 from main.db.que_domain import select_domain_all
 from main.db.que_file import select_file_all
 from main.db.que_kkn_part import select_kkn_part_all
+from main.db.que_domain_setting import select_domain_setting
+from main.db.que_domain_setting import insert_update_setting_to_db
+from main.db.que_domain_setting import delete_setting
+from main.db.que_link import select_links_by_domain_id
 # старое
 from main.domain_setting.add_link_to_db import add_link_to_db
 from main.domain_setting.get_domains_from_db import get_domains_from_db
@@ -60,34 +64,38 @@ def open_parser_setting():
         jsonFileList = json_file_ist,
         jsonPartList = json_part_list)
 
-@app.route('/write_domain_list')
-def write_domain_list():
-    '''выгружаем список доменов
-    [[id, domain],...]'''
-    import json
-    response = get_domains_from_db()
-
-    return json.dumps(response)
+# @app.route('/write_domain_list')
+# def write_domain_list():
+#     '''выгружаем список доменов
+#     [[id, domain],...]'''
+#     import json
+#     response = get_domains_from_db()
+#
+#     return json.dumps(response)
 
 @app.route('/write_domain_settings/<domain_id>')
 def write_domain_settings(domain_id):
     '''Выгружаем настройки домена
     {id:[set_name,content],...}
     '''
-    domain_settings = get_domain_set_from_db(domain_id)
-    return domain_settings
+    # domain_settings = get_domain_set_from_db(domain_id)
+    domain_settings = select_domain_setting(domain_id)
+    return json.dumps(domain_settings)
 
 @app.route('/save_domain_settings', methods = ['POST'])
 def save_domain_settings():
     dict_to_db = request.get_json()
-    server_answer = save_setting_to_db(dict_to_db)
+    # server_answer = save_setting_to_db(dict_to_db)
+    server_answer = insert_update_setting_to_db(dict_to_db)
+
     if server_answer:
         return '{"save":true}'
 
 @app.route('/delete_domain_setting', methods = ['POST'])
 def delete_domain_settings():
     setting_id = request.get_json()
-    answer = delete_setting_from_db(setting_id)
+    # answer = delete_setting_from_db(setting_id)
+    answer = delete_setting(setting_id)
     return {'answer':1}
 
 #<- <- <- <- <- <- <- <- ЗАГРУЗКА ДАННЫХ -> -> -> -> -> -> -> ->
@@ -122,15 +130,16 @@ def upload_file():
 
 @app.route('/get_domain_links/<domain_id>')
 def write_domain_links(domain_id):
-    '''вывод всех ссылок домена
-    [[id,link],]'''
-    domain_links = get_domain_links_from_db(domain_id)
-    return domain_links
+    ''' вывод всех ссылок домена '''
+    # domain_links = get_domain_links_from_db(domain_id)
+    domain_links = select_links_by_domain_id(domain_id)
+    return json.dumps(domain_links)
 
 @app.route('/get_all_links_by_domains')
 def show_all_links_domain_links():
     '''вывод всех ссылок всех доменов
     {domain:[[id,link],],}'''
+    # domains_and_links = get_all_links_sort_by_domains()
     domains_and_links = get_all_links_sort_by_domains()
     return domains_and_links
 

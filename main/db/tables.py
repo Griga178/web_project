@@ -65,12 +65,14 @@ class Link(Base):
     link = Column(String(255), nullable = False)
     id_domain = Column(Integer, ForeignKey('domain.id'))
     file_kkn_links = relationship("File_kkn_link", backref = 'link')
+    parsing_results = relationship("Parsing", backref = 'link')
     @property
     def to_dict(self):
         link_obj = {
             'id': self.id,
             'link': self.link,
-            'files': [file.file.to_dict for file in self.file_kkn_links]
+            'files': [file.file.to_dict for file in self.file_kkn_links],
+            'pars_results_ammount': len({parsing_results.id for parsing_result in self.parsing_results})
         }
         return link_obj
 
@@ -148,7 +150,15 @@ class File(Base):
         }
         return file_dict
 
-# class Chars(Base):
-    # id = Column(Integer, primary_key = True)
+class Parsing(Base):
+    'Результаты парсинга'
+    __tablename__ = 'parsing'
+    id = Column(Integer, primary_key = True)
+    id_link = Column(Integer, ForeignKey('link.id'), nullable = False)
+    price = Column(FLOAT)
+    parsing_date = Column(Text)
+    product_name = Column(Text)
+    product_avaliable = Column(Boolean) # подумать
+    user_changed = Column(Boolean)  # user_accept
 
 # class Parsing(Base):

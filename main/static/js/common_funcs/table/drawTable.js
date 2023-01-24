@@ -41,10 +41,6 @@ function clearFilters(tableBlockId){
   // console.log("hello", tableBlockId)
   console.log(inputArr)
 }
-function loadDomainSetting(thisObj) {
-  let domainName = thisObj.getElementsByTagName("td")
-  write_domain_setting(thisObj.dataset.primarykey, domainName[0].innerHTML)
-}
 
 function createBodyV3(tableKeys) {
   let tableBlock = document.getElementById(tableKeys.htmlTableId)
