@@ -4,6 +4,8 @@ import cv2
 
 import time, webbrowser, pyautogui
 
+from main.settings import SCREENSHOOT_FOLDER_PATH
+
 def make_screen_shot(name):
     image = pyautogui.screenshot(region = (0, 0, 1920, 1080))
     image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
@@ -18,8 +20,6 @@ def open_shoot_close(url, screen_name):
 
 def start_make_screens_by_list(links_list):
 
-    folder = 'C:/Users/G.Tishchenko/Desktop/web_screens/'
-
     for link in links_list:
-        screen_name = folder + link[0] + '.jpg'
+        screen_name = SCREENSHOOT_FOLDER_PATH + link[0] + '.jpg'
         open_shoot_close(link[1], screen_name)

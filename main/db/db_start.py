@@ -1,6 +1,6 @@
 from main.db.tables import *
-# from main.settings import DATA_BASE_PATH
-DATA_BASE_PATH = 'sqlite:///data_base_ver_3.db'
+from main.settings import DATA_BASE_PATH
+
 from sqlalchemy import MetaData
 
 metadata = MetaData()

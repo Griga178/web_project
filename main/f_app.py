@@ -6,10 +6,12 @@ import json
 from main.db.que_domain import select_domain_all
 from main.db.que_file import select_file_all
 from main.db.que_kkn_part import select_kkn_part_all
-from main.db.que_domain_setting import select_domain_setting
+from main.db.que_domain_setting import select_domain_settings_by_domain_id
 from main.db.que_domain_setting import insert_update_setting_to_db
 from main.db.que_domain_setting import delete_setting
 from main.db.que_link import select_links_by_domain_id
+
+from main.parser.parser.trial_parse import parse_link
 # старое
 from main.domain_setting.add_link_to_db import add_link_to_db
 from main.domain_setting.get_domains_from_db import get_domains_from_db
@@ -47,20 +49,20 @@ def main():
  #<- <- <- <- <- <- <- <- НАСТРОЙКИ ДОМЕНОВ -> -> -> -> -> -> -> ->
 @app.route('/domain_settings')
 def open_parser_setting():
-    dom_obj_list = select_domain_all()
+    dom_obj_list = select_domain_all() # подгружать частями через Ajax
     file_obj_list = select_file_all()
     kkn_part_obj_list = select_kkn_part_all()
 
-    domain_dict = [dom_obj.to_dict for dom_obj in dom_obj_list]
+    domain_dict = [dom_obj.to_dict for dom_obj in dom_obj_list] # не тут
     file_dict_list = [file_obj.to_dict for file_obj in file_obj_list]
     part_dict_list = [part_obj.to_dict for part_obj in kkn_part_obj_list]
 
-    json_domain_list = json.dumps(domain_dict)
+    json_domain_list = json.dumps(domain_dict) # не тут
     json_file_ist = json.dumps(file_dict_list)
     json_part_list = json.dumps(part_dict_list)
     return render_template('domain_settings.html',
         domain_style = "current",
-        jsonDomainList = json_domain_list,
+        jsonDomainList = json_domain_list, # не тут
         jsonFileList = json_file_ist,
         jsonPartList = json_part_list)
 
@@ -79,8 +81,12 @@ def write_domain_settings(domain_id):
     {id:[set_name,content],...}
     '''
     # domain_settings = get_domain_set_from_db(domain_id)
-    domain_settings = select_domain_setting(domain_id)
-    return json.dumps(domain_settings)
+    domain_settings = select_domain_settings_by_domain_id(domain_id)
+    forjsdomain_settings = {}
+    domain_settings
+    for set_obj in domain_settings:
+         forjsdomain_settings[str(set_obj.id)] = [set_obj.setting_name, set_obj.setting_content]
+    return json.dumps(forjsdomain_settings)
 
 @app.route('/save_domain_settings', methods = ['POST'])
 def save_domain_settings():
@@ -115,7 +121,7 @@ def open_uploader():
 def upload_file():
     file = request.files.get('file')
     file_obj = insert_reestr(file)
-    return file_obj
+    return json.dumps(file_obj)
 
 #<- <- <- <- <- <- <- <- ПРОСМОТР ТАБЛИЦ БД -> -> -> -> -> -> -> ->
 # from main.data_base.db_start import Links, engine
@@ -151,8 +157,9 @@ def get_parser_page():
 @app.route('/parse_link/<link_id>')
 def trial_parse(link_id):
     'возвращает результат парсинга 1 ссылки'
-    print(f'start parsing link id: {link_id}')
-    return 'пустой ответ'
+    parsing_result = parse_link(link_id)
+    print(parsing_result)
+    return json.dumps(parsing_result)
 
 @app.route('/get_links_by_domain_to_screen/<domain_name>')
 def get_links_by_domain_to_screen(domain_name):

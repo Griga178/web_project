@@ -50,6 +50,14 @@
   </table>
   <table id="partFilterTable" class="table_sort" >
   </table>
+</div>
+<script type="text/javascript">
+  let filterDataObj = {{jsonDomainList | tojson | safe}};
+  let fileFilterObjArray = {{jsonFileList | tojson | safe}};
+  let partFilterObjArray = {{jsonPartList | tojson | safe}};
+
+</script>
+<script type=text/javascript src="{{ url_for('static', filename='js/settings/tableKeys.js') }}"></script>
 
 <style>
 
@@ -103,13 +111,6 @@
 }
 
   </style>
-</div>
-<script type="text/javascript">
-  let filterDataObj = {{jsonDomainList | tojson | safe}};
-  let fileFilterObjArray = {{jsonFileList | tojson | safe}};
-  let partFilterObjArray = {{jsonPartList | tojson | safe}};
 
-</script>
-<script type=text/javascript src="{{ url_for('static', filename='js/settings/tableKeys.js') }}"></script>
 
 {% endblock %}

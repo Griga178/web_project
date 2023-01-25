@@ -7,11 +7,9 @@ from main.db.db_start import engine
 DBSession = sessionmaker(bind = engine)
 session = DBSession()
 
-def select_domain_setting(domain_id):
-    domain_settings = {}
-    domain_frob_db = session.query(Domain_settings).filter_by(id_domain = domain_id).all()
-    for set_obj in domain_frob_db:
-         domain_settings[str(set_obj.id)] = [set_obj.setting_name, set_obj.setting_content]
+def select_domain_settings_by_domain_id(domain_id):
+
+    domain_settings = session.query(Domain_settings).filter_by(id_domain = domain_id).all()
 
     return domain_settings
 

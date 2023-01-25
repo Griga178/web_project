@@ -25,7 +25,7 @@ function write_links_list(links_array) {
     new_a.setAttribute('href', `${links_array[i].link}`)
     new_a.setAttribute('target', '_blank')
     // new_a.innerHTML = `${links_array[i][0]} - - ${links_array[i][1]}`
-    new_a.innerHTML = `${links_array[i].id} - - ${links_array[i].link}`
+    new_a.innerHTML = `${links_array[i].id} - - ${links_array[i].link.slice(0,30)}`
     new_li.appendChild(new_a)
     pasted_links.appendChild(new_li)
 
@@ -37,8 +37,10 @@ function write_links_list(links_array) {
 
 function draw_parse_btn(link_id) {
   let span_btn = document.createElement('span')
-  span_btn.setAttribute('onclick', `parse_link(${link_id}); append_hide_attr(this)`)
+  // span_btn.setAttribute('onclick', `parse_link(${link_id}); append_hide_attr(this)`)
+  span_btn.setAttribute('onclick', `parse_link(this)`)
   span_btn.setAttribute('style', 'cursor:pointer')
+  span_btn.setAttribute('data-idlink', `${link_id}`)
   span_btn.innerHTML = 'Отпарсить'
   return span_btn
 }

@@ -38,3 +38,10 @@ def select_links_by_domain_id(domain_id):
         db_answer.append(links.to_dict)
 
     return db_answer
+
+def select_link_by_id(link_id):
+    try:
+        link_obj = session.query(Link).filter_by(id = link_id).one()
+        return link_obj
+    except NoResultFound:
+        return False

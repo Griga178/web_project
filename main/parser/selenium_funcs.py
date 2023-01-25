@@ -14,7 +14,7 @@ def create_selenium_driver():
     caps["pageLoadStrategy"] = "eager"
     binary_yandex_driver_file = 'yandexdriver.exe'
     driver = webdriver.Chrome(binary_yandex_driver_file, desired_capabilities = caps, options = options)
-    driver.implicitly_wait(1)
+    driver.implicitly_wait(5)
     # driver.delete_all_cookies()
     return driver
 

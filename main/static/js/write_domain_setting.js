@@ -9,10 +9,13 @@ function combine_settings(settings_from_db){
   let combine_lists = []
   // проверяем какие настройки есть в бд
   let check_dict = {'price':[], 'name':[], 'avaliable':[]}
+
   for (set_name in check_dict) {
     for (setting in settings_from_db) {
       if (settings_from_db[setting][0] === set_name) {
+      // if (settings_from_db[setting].setting_name === set_name) {
         check_dict[set_name].push(setting)
+        // check_dict[set_name].push(settings_from_db[setting].id)
       }
     }
   }
@@ -22,9 +25,11 @@ function combine_settings(settings_from_db){
     if (check_dict[tag_name].length === 0) {
       combine_lists.push([tag_name, false, false])
     }
-    for (setting_id in check_dict[tag_name]){
-      let id_setting = check_dict[tag_name][setting_id]
+    for (setting_index in check_dict[tag_name]){
+      // setting = ["name", "div;class;name"] - пример
+      let id_setting = check_dict[tag_name][setting_index]
       let content_setting = settings_from_db[id_setting][1]
+      // let content_setting = settings_from_db[id_setting].setting_content
       combine_lists.push([tag_name, id_setting ,content_setting])
     }
   }
