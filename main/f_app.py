@@ -15,9 +15,6 @@ from main.parser.parser.trial_parse import parse_link
 # старое
 from main.domain_setting.add_link_to_db import add_link_to_db
 from main.domain_setting.get_domains_from_db import get_domains_from_db
-from main.domain_setting.get_domain_set_from_db import get_domain_set_from_db
-from main.domain_setting.save_setting_to_db import save_setting_to_db
-from main.domain_setting.delete_setting_from_db import delete_setting_from_db
 from main.domain_setting.get_domain_links_from_db import get_domain_links_from_db
 # для базы данных
 from main.data_base.get_all_links_sort_by_domain import get_all_links_sort_by_domains
@@ -66,21 +63,8 @@ def open_parser_setting():
         jsonFileList = json_file_ist,
         jsonPartList = json_part_list)
 
-# @app.route('/write_domain_list')
-# def write_domain_list():
-#     '''выгружаем список доменов
-#     [[id, domain],...]'''
-#     import json
-#     response = get_domains_from_db()
-#
-#     return json.dumps(response)
-
 @app.route('/write_domain_settings/<domain_id>')
 def write_domain_settings(domain_id):
-    '''Выгружаем настройки домена
-    {id:[set_name,content],...}
-    '''
-    # domain_settings = get_domain_set_from_db(domain_id)
     domain_settings = select_domain_settings_by_domain_id(domain_id)
     forjsdomain_settings = {}
     domain_settings
@@ -91,16 +75,13 @@ def write_domain_settings(domain_id):
 @app.route('/save_domain_settings', methods = ['POST'])
 def save_domain_settings():
     dict_to_db = request.get_json()
-    # server_answer = save_setting_to_db(dict_to_db)
     server_answer = insert_update_setting_to_db(dict_to_db)
-
     if server_answer:
         return '{"save":true}'
 
 @app.route('/delete_domain_setting', methods = ['POST'])
 def delete_domain_settings():
     setting_id = request.get_json()
-    # answer = delete_setting_from_db(setting_id)
     answer = delete_setting(setting_id)
     return {'answer':1}
 
@@ -124,20 +105,9 @@ def upload_file():
     return json.dumps(file_obj)
 
 #<- <- <- <- <- <- <- <- ПРОСМОТР ТАБЛИЦ БД -> -> -> -> -> -> -> ->
-# from main.data_base.db_start import Links, engine
-# from sqlalchemy.orm import sessionmaker
-# DBSession = sessionmaker(bind = engine)
-# session = DBSession()
-# @app.route('/links_base')
-# def open_links_base():
-#     links = session.query(Links).all()
-#     # links = Links.query
-#     return render_template('links_base_ver_2.html', db_style = "current", title = 'Bootstrap Table', links = links)
-
 @app.route('/get_domain_links/<domain_id>')
 def write_domain_links(domain_id):
     ''' вывод всех ссылок домена '''
-    # domain_links = get_domain_links_from_db(domain_id)
     domain_links = select_links_by_domain_id(domain_id)
     return json.dumps(domain_links)
 
@@ -145,7 +115,6 @@ def write_domain_links(domain_id):
 def show_all_links_domain_links():
     '''вывод всех ссылок всех доменов
     {domain:[[id,link],],}'''
-    # domains_and_links = get_all_links_sort_by_domains()
     domains_and_links = get_all_links_sort_by_domains()
     return domains_and_links
 
@@ -206,7 +175,7 @@ def send_image(result_id):
     except:
         base64_img = image_sender(0)
     return jsonify({'status': True, 'image': base64_img})
-#
+
 @app.route('/filtered_results', methods = ['GET', 'POST'])
 def get_filtered_result_list():
     filtered_query = request.get_json()
