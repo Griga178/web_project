@@ -45,8 +45,8 @@ class Link(Base):
     name = Column(Text, nullable = False)
 
     website_id = Column(Integer, ForeignKey('website.id'))
-    source_id = Column(Integer, ForeignKey('source.id'))
 
+    sources = relationship("Source_Link", backref = 'link')
     contents = relationship("Link_content", backref = 'link')
 
 class Link_content(Base):
@@ -60,6 +60,13 @@ class Link_content(Base):
     def __str__(self):
         return f'{self.name} {self.content}'
 
+class Source_Link(Base):
+    __tablename__ = 'source_link'
+    id = Column(Integer, primary_key = True)
+
+    link_id = Column(Integer, ForeignKey('link.id'))
+    source_id = Column(Integer, ForeignKey('source.id'))
+
 class Source(Base):
     __tablename__ = 'source'
     id = Column(Integer, primary_key = True)
@@ -67,7 +74,7 @@ class Source(Base):
 
     kkn_id = Column(Integer, ForeignKey('kkn.id'))
 
-    links = relationship("Link", backref = 'source')
+    links = relationship("Source_Link", backref = 'source')
     work_tables = relationship("Work_table_Source", backref = 'source')
 
 class Work_table_Source(Base):
@@ -84,6 +91,8 @@ class Work_table(Base):
     date = Column(DateTime(timezone = True), default = datetime.now())
 
     sources = relationship("Work_table_Source", backref = 'work_table')
+    def __str__(self):
+        return f'<work_table> {self.id}: {self.name} ({self.date.strftime("%H:%M %d.%m.%y")})'
 
 class KKN(Base):
     __tablename__ = 'kkn'
@@ -97,6 +106,10 @@ class KKN(Base):
     ktru_id = Column(Integer, ForeignKey('ktru.id'))
 
     sources = relationship("Source", backref = 'kkn')
+    def __str__(self):
+        return f'<kkn> {self.id}: {self.name} {self.okpd_2} {self.detalization}'
+    def __repr__(self):
+        return f'{self.name}'
 
 class KKN_Part(Base):
     __tablename__ = 'kkn_part'
@@ -112,6 +125,10 @@ class KKN_Family(Base):
     name = Column(Text, nullable = False)
 
     kkns = relationship("KKN", backref = 'kkn_family')
+    def __str__(self):
+        return f'<kkn> {self.id}: {self.name}'
+    def __repr__(self):
+        return f'{self.name}'
 
 class KTRU(Base):
     __tablename__ = 'ktru'
